@@ -1,0 +1,31 @@
+{
+  "cpv": {
+    "url": "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/nomenclature-cpv",
+    "retrieved_at": "2026-11-01T19:24:57+00:00",
+    "rows": 9454,
+    "license": "CC BY 4.0 (Communautés européennes, règlement (CE) n° 213/2008)"
+  },
+  "geo": {
+    "url": "https://geo.api.gouv.fr/departements",
+    "retrieved_at": "2026-11-01T19:25:10+00:00",
+    "rows": 101,
+    "license": "Licence Ouverte 2.0 (COG INSEE)"
+  },
+  "boamp": {
+    "url": "https://boamp-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/boamp",
+    "snapshot_date": "2026-11-01",
+    "retrieved_at": "2026-11-01T19:25:32+00:00",
+    "rows": 8036,
+    "filter": "nature='APPEL_OFFRE' and datelimitereponse >= date'2026-11-01'",
+    "license": "Licence Ouverte 2.0 (DILA, BOAMP)"
+  },
+  "decp": {
+    "dataset": "https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire",
+    "url": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261031-051826/decp.parquet",
+    "resource_last_modified": "2026-10-31T05:19:44.406000+00:00",
+    "retrieved_at": "2026-11-01T19:31:05+00:00",
+    "bytes": 255254660,
+    "sha256": "24b6b5773d19e3882d504f0d75dc44b3722384769cf4c51e34788d58feb055bc",
+    "license": "Licence Ouverte / Open Licence 2.0 (Etalab)"
+  }
+}
