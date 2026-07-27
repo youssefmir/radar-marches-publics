@@ -1,0 +1,28 @@
+# Environnements
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.env
+
+# Données brutes et intermédiaires (régénérées par `make data`)
+data/raw/
+data/interim/
+data/cache/
+data/warehouse/
+*.duckdb
+*.duckdb.wal
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
+
+# Front
+web/dist/
+web/test-results/
+web/playwright-report/
+*.log
