@@ -1,0 +1,27 @@
+name: radar_dw
+version: "1.0.0"
+config-version: 2
+profile: radar_dw
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  periode_debut: "2021-01-01"
+  # Seuils de nettoyage (voir docs/qualite-donnees.md)
+  montant_min: 1
+  montant_max: 10000000000
+  offres_max: 250
+
+models:
+  radar_dw:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table

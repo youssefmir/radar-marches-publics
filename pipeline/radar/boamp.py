@@ -99,29 +99,45 @@ def parse_donnees(raw: str | None) -> dict:
         if ("cpv" in p or "itemclassificationcode" in p) and RE_CPV.match(val):
             if val not in cpv:
                 cpv.append(val)
-        elif siret is None and RE_SIRET.match(val) and (
-            "codeidentificationnational" in p or "code_ident_national" in p or "companyid" in p
+        elif (
+            siret is None
+            and RE_SIRET.match(val)
+            and ("codeidentificationnational" in p or "code_ident_national" in p or "companyid" in p)
         ):
             siret = val
-        elif (last in ("description", "objet_complet", "#text") and ("description" in p or "objet_complet" in p)
-              and "criteri" not in p and len(val) > 20):
-            if val not in descriptions:
-                descriptions.append(val)
-        if "estimatedoverallcontractamount/#text" in p or ("estimationvaleur/valeur" in p) or p.endswith("/valeur_totale"):
+        elif (
+            last in ("description", "objet_complet", "#text")
+            and ("description" in p or "objet_complet" in p)
+            and "criteri" not in p
+            and len(val) > 20
+        ) and val not in descriptions:
+            descriptions.append(val)
+        if (
+            "estimatedoverallcontractamount/#text" in p
+            or ("estimationvaleur/valeur" in p)
+            or p.endswith("/valeur_totale")
+        ):
             v = _num(val)
             if v:
                 (lot_values if "lot" in p else project_values).append(v)
         if re.search(r"procurementprojectlot/cbc:id/#text$", p) or re.search(r"/lots?/(num|@num)$", p):
             lot_ids.add(val)
-        if ("criter" in p and "awardingcriterion" not in p and "tendererqualification" not in p
-                and "selection" not in p and len(val) > 2 and not RE_CODE.match(val)) and not val.startswith(("http", "ORG-")):
+        if (
+            "criter" in p
+            and "awardingcriterion" not in p
+            and "tendererqualification" not in p
+            and "selection" not in p
+            and len(val) > 2
+            and not RE_CODE.match(val)
+        ) and not val.startswith(("http", "ORG-")):
             criteres.append(val)
-        if (last in ("dureemois", "duree_mois") or ("durationmeasure/#text" in p and "plannedperiod" in p)):
+        if last in ("dureemois", "duree_mois") or ("durationmeasure/#text" in p and "plannedperiod" in p):
             v = _num(val)
             if v:
                 durees.append(v)
     nb_lots = len(lot_ids) or len(
-        [1 for path, _ in leaves(tree) if re.search(r"/lots?/lot/description$", path.lower())])
+        [1 for path, _ in leaves(tree) if re.search(r"/lots?/lot/description$", path.lower())]
+    )
     montant = max(project_values) if project_values else (sum(lot_values) if lot_values else None)
     ef = eforms_criteres(tree)
     prix_ef = None
@@ -152,33 +168,37 @@ def flatten(snapshot_path: Path) -> pd.DataFrame:
     for r in snap["records"]:
         d = parse_donnees(r.get("donnees"))
         deps = r.get("code_departement") or []
-        rows.append({
-            "idweb": r["idweb"],
-            "url_avis": r.get("url_avis"),
-            "objet": (r.get("objet") or "").strip(),
-            "acheteur_nom": r.get("nomacheteur"),
-            "departements": [str(x) for x in deps],
-            "departement_principal": str(deps[0]) if deps else None,
-            "date_parution": r.get("dateparution"),
-            "date_limite": r.get("datelimitereponse"),
-            "famille": r.get("famille"),
-            "famille_libelle": r.get("famille_libelle"),
-            "procedure": r.get("procedure_libelle"),
-            "type_procedure": r.get("type_procedure"),
-            "nature": r.get("nature_categorise_libelle"),
-            "etat": r.get("etat"),
-            "type_marche": (r.get("type_marche") or [None])[0],
-            "descripteurs": r.get("descripteur_libelle") or [],
-            "criteres_boamp": r.get("criteres") or [],
-            "schema": r.get("source_schema"),
-            **d,
-        })
+        rows.append(
+            {
+                "idweb": r["idweb"],
+                "url_avis": r.get("url_avis"),
+                "objet": (r.get("objet") or "").strip(),
+                "acheteur_nom": r.get("nomacheteur"),
+                "departements": [str(x) for x in deps],
+                "departement_principal": str(deps[0]) if deps else None,
+                "date_parution": r.get("dateparution"),
+                "date_limite": r.get("datelimitereponse"),
+                "famille": r.get("famille"),
+                "famille_libelle": r.get("famille_libelle"),
+                "procedure": r.get("procedure_libelle"),
+                "type_procedure": r.get("type_procedure"),
+                "nature": r.get("nature_categorise_libelle"),
+                "etat": r.get("etat"),
+                "type_marche": (r.get("type_marche") or [None])[0],
+                "descripteurs": r.get("descripteur_libelle") or [],
+                "criteres_boamp": r.get("criteres") or [],
+                "schema": r.get("source_schema"),
+                **d,
+            }
+        )
     df = pd.DataFrame(rows)
     df["snapshot_date"] = snapshot_date.isoformat()
     parution = pd.to_datetime(df["date_parution"], errors="coerce")
     limite = pd.to_datetime(df["date_limite"], errors="coerce", utc=True).dt.tz_localize(None)
     df["exclu_motif"] = None
-    df.loc[parution < pd.Timestamp(snapshot_date - dt.timedelta(days=MAX_AGE_DAYS)), "exclu_motif"] = "parution_ancienne"
+    df.loc[parution < pd.Timestamp(snapshot_date - dt.timedelta(days=MAX_AGE_DAYS)), "exclu_motif"] = (
+        "parution_ancienne"
+    )
     df.loc[limite > pd.Timestamp(snapshot_date + dt.timedelta(days=730)), "exclu_motif"] = "date_limite_improbable"
     df.loc[df["etat"] == "ANNULATION", "exclu_motif"] = "avis_annule"
     return df
@@ -197,7 +217,9 @@ def main(argv: list[str]) -> None:
     out_all = config.INTERIM / "boamp_avis.parquet"
     df.to_parquet(out_all, index=False)
     # Copie versionnée (compacte, sans données personnelles) pour la reproductibilité de la démo.
-    df.to_parquet(config.SNAPSHOTS / f"boamp_avis_{df['snapshot_date'].iat[0]}.parquet", index=False, compression="zstd")
+    df.to_parquet(
+        config.SNAPSHOTS / f"boamp_avis_{df['snapshot_date'].iat[0]}.parquet", index=False, compression="zstd"
+    )
     print(f"{len(df)} avis, dont {df['exclu_motif'].isna().sum()} retenus ; exclusions :")
     print(df["exclu_motif"].value_counts().to_string())
 

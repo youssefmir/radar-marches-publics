@@ -37,8 +37,11 @@ def fetch_decp() -> Path:
     lock = json.loads(config.SOURCES_LOCK.read_text()) if config.SOURCES_LOCK.exists() else {}
     if "decp" in lock and not os.environ.get("RADAR_DECP_LATEST"):
         # Reproductibilité : on retélécharge exactement la version utilisée pour les chiffres publiés.
-        res = {"url": lock["decp"]["url"], "filesize": lock["decp"]["bytes"],
-               "last_modified": lock["decp"]["resource_last_modified"]}
+        res = {
+            "url": lock["decp"]["url"],
+            "filesize": lock["decp"]["bytes"],
+            "last_modified": lock["decp"]["resource_last_modified"],
+        }
     else:
         meta = get_json(f"https://www.data.gouv.fr/api/1/datasets/{config.DECP_DATASET}/")
         res = next(r for r in meta["resources"] if r["title"] == config.DECP_RESOURCE_TITLE)
@@ -66,8 +69,10 @@ def fetch_cpv() -> Path:
     rows: list[dict] = []
     offset = 0
     while True:
-        page = get_json(f"{config.CPV_API}/records", {"select": "code_short,fr", "limit": 100, "offset": offset,
-                                                       "order_by": "code_short"})
+        page = get_json(
+            f"{config.CPV_API}/records",
+            {"select": "code_short,fr", "limit": 100, "offset": offset, "order_by": "code_short"},
+        )
         rows += page["results"]
         offset += 100
         if offset >= page["total_count"]:
@@ -78,8 +83,15 @@ def fetch_cpv() -> Path:
         w.writerow(["code_cpv", "libelle"])
         for r in sorted(rows, key=lambda r: r["code_short"]):
             w.writerow([r["code_short"], r["fr"]])
-    _lock("cpv", {"url": config.CPV_API, "retrieved_at": _now(), "rows": len(rows),
-                  "license": "CC BY 4.0 (Communautés européennes, règlement (CE) n° 213/2008)"})
+    _lock(
+        "cpv",
+        {
+            "url": config.CPV_API,
+            "retrieved_at": _now(),
+            "rows": len(rows),
+            "license": "CC BY 4.0 (Communautés européennes, règlement (CE) n° 213/2008)",
+        },
+    )
     return dest
 
 
@@ -93,8 +105,15 @@ def fetch_geo() -> Path:
         w.writerow(["code_departement", "nom_departement", "code_region", "nom_region"])
         for d in sorted(deps, key=lambda d: d["code"]):
             w.writerow([d["code"], d["nom"], d["codeRegion"], regions.get(d["codeRegion"], "")])
-    _lock("geo", {"url": f"{config.GEO_API}/departements", "retrieved_at": _now(), "rows": len(deps),
-                  "license": "Licence Ouverte 2.0 (COG INSEE)"})
+    _lock(
+        "geo",
+        {
+            "url": f"{config.GEO_API}/departements",
+            "retrieved_at": _now(),
+            "rows": len(deps),
+            "license": "Licence Ouverte 2.0 (COG INSEE)",
+        },
+    )
     return dest
 
 
@@ -105,26 +124,44 @@ def fetch_boamp(snapshot: dt.date | None = None) -> Path:
     """
     snapshot = snapshot or dt.date.today()
     where_open = f"nature='APPEL_OFFRE' and datelimitereponse >= date'{snapshot.isoformat()}'"
-    months = get_json(f"{config.BOAMP_API}/records", {
-        "where": where_open, "group_by": "year(dateparution) as y, month(dateparution) as m",
-        "select": "count(*) as n", "limit": 200})["results"]
+    months = get_json(
+        f"{config.BOAMP_API}/records",
+        {
+            "where": where_open,
+            "group_by": "year(dateparution) as y, month(dateparution) as m",
+            "select": "count(*) as n",
+            "limit": 200,
+        },
+    )["results"]
     records: list[dict] = []
     for g in months:
         y, m = int(g["y"]), int(g["m"])
         where = f"{where_open} and year(dateparution)={y} and month(dateparution)={m}"
         offset = 0
         while offset < g["n"]:
-            page = get_json(f"{config.BOAMP_API}/records", {"where": where, "limit": 100, "offset": offset,
-                                                             "order_by": "idweb"})
+            page = get_json(
+                f"{config.BOAMP_API}/records", {"where": where, "limit": 100, "offset": offset, "order_by": "idweb"}
+            )
             records += page["results"]
             offset += 100
         print(f"  {y}-{m:02d} : {g['n']} avis")
     dest = config.RAW / f"boamp_{snapshot.isoformat()}.json"
-    dest.write_text(json.dumps({"snapshot_date": snapshot.isoformat(), "retrieved_at": _now(),
-                                "records": records}, ensure_ascii=False))
-    _lock("boamp", {"url": config.BOAMP_API, "snapshot_date": snapshot.isoformat(), "retrieved_at": _now(),
-                    "rows": len(records), "filter": where_open,
-                    "license": "Licence Ouverte 2.0 (DILA, BOAMP)"})
+    dest.write_text(
+        json.dumps(
+            {"snapshot_date": snapshot.isoformat(), "retrieved_at": _now(), "records": records}, ensure_ascii=False
+        )
+    )
+    _lock(
+        "boamp",
+        {
+            "url": config.BOAMP_API,
+            "snapshot_date": snapshot.isoformat(),
+            "retrieved_at": _now(),
+            "rows": len(records),
+            "filter": where_open,
+            "license": "Licence Ouverte 2.0 (DILA, BOAMP)",
+        },
+    )
     return dest
 
 

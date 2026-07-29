@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: fct_attributions
+    description: >
+      Table de faits du modèle en étoile. Grain : une attribution initiale = un marché × un titulaire.
+      `montant_part` = montant du marché / nombre de co-titulaires (additif sans double compte).
+    columns:
+      - name: attribution_id
+        description: Clé technique (md5 du marché et du titulaire).
+        data_tests: [unique, not_null]
+      - name: marche_uid
+        data_tests: [not_null]
+      - name: acheteur_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_acheteur')
+                field: acheteur_id
+      - name: titulaire_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_titulaire')
+                field: titulaire_key
+      - name: code_cpv
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_cpv')
+                field: code_cpv
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: departement_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_geo')
+                field: code_departement
+      - name: procedure_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_procedure')
+                field: procedure_code
+      - name: type_marche
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [Travaux, Services, Fournitures, Non catégorisé, Non renseigné]
+      - name: categorie_titulaire
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [PME, ETI, GE, Inconnue]
+      - name: montant_part
+        description: Part du montant du marché attribuée au titulaire (null si montant inexploitable).
+      - name: offres_recues
+        description: Nombre d'offres reçues si exploitable (1 à 250), sinon null.
+  - name: dim_acheteur
+    description: Acheteurs publics (établissement SIRET), localisation et volumes.
+    columns:
+      - name: acheteur_id
+        data_tests: [unique, not_null]
+      - name: departement_code
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_geo')
+                field: code_departement
+  - name: dim_titulaire
+    description: Titulaires ; nom masqué pour les entrepreneurs individuels (personnes physiques).
+    columns:
+      - name: titulaire_key
+        data_tests: [unique, not_null]
+      - name: categorie
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [PME, ETI, GE, Inconnue]
+  - name: dim_cpv
+    columns:
+      - name: code_cpv
+        data_tests: [unique, not_null]
+      - name: type_cpv
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [Travaux, Services, Fournitures, Non classé]
+  - name: dim_date
+    columns:
+      - name: date_key
+        data_tests: [unique, not_null]
+  - name: dim_geo
+    columns:
+      - name: code_departement
+        data_tests: [unique, not_null]
+  - name: dim_procedure
+    columns:
+      - name: procedure_code
+        data_tests:
+          - unique
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [AOO, AOR, MAPA, NEGOCIEE, DIALOGUE, SANS_PUB, AUTRE, NR]
+  - name: mart_marches
+    description: Une ligne par marché (objet, acheteur, CPV, montant, offres, titulaire principal).
+    columns:
+      - name: marche_uid
+        data_tests: [unique, not_null]

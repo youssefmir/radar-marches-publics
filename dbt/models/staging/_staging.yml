@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_decp__attributions
+    description: Attributions initiales (modification_id = 0) des DECP, colonnes renommées et typées.
+    columns:
+      - name: marche_uid
+        description: Identifiant global du marché (SIRET acheteur + identifiant interne + CPV), fourni par decp.info.
+        data_tests: [not_null]
+  - name: stg_ref__cpv
+    description: Nomenclature CPV 2008 (vocabulaire principal) avec niveaux division / groupe / classe.
+    columns:
+      - name: code_cpv
+        data_tests: [unique, not_null]
+  - name: stg_ref__geo
+    columns:
+      - name: code_departement
+        data_tests: [unique, not_null]
+  - name: stg_boamp__avis
+    description: Avis BOAMP de l'instantané, aplatis par `radar.boamp`.
+    columns:
+      - name: idweb
+        data_tests: [unique, not_null]
+  - name: stg_sirene__unites
+    columns:
+      - name: siren
+        data_tests: [unique]

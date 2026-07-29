@@ -1,0 +1,9 @@
+procedure_code,procedure_libelle,avec_publicite,ordre
+AOO,Appel d'offres ouvert,true,1
+AOR,Appel d'offres restreint,true,2
+MAPA,Procédure adaptée,true,3
+NEGOCIEE,Procédure avec négociation,true,4
+DIALOGUE,Dialogue compétitif,true,5
+SANS_PUB,Marché sans publicité ni mise en concurrence,false,6
+AUTRE,Autre procédure,true,7
+NR,Non renseignée,,8

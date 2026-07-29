@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Fichiers bruts téléchargés par `make data` (non versionnés).
+    meta:
+      external_location: "{{ env_var('RADAR_DATA', '../data') }}/{name}"
+    tables:
+      - name: decp
+        description: >
+          DECP consolidées et enrichies par le projet decp.info (data.gouv.fr, Licence Ouverte 2.0).
+          Une ligne par marché × titulaire × modification.
+        meta:
+          external_location: "read_parquet('{{ env_var('RADAR_DATA', '../data') }}/raw/decp.parquet')"
+      - name: cpv
+        description: Nomenclature CPV 2008, vocabulaire principal, libellés français.
+        meta:
+          external_location: "read_csv('{{ env_var('RADAR_DATA', '../data') }}/reference/cpv.csv', header=true, all_varchar=true)"
+      - name: geo_departements
+        description: Départements et régions (COG INSEE via geo.api.gouv.fr).
+        meta:
+          external_location: "read_csv('{{ env_var('RADAR_DATA', '../data') }}/reference/geo_departements.csv', header=true, all_varchar=true)"
+      - name: boamp_avis
+        description: Instantané des avis BOAMP ouverts, aplati par `radar.boamp` (une ligne par avis).
+        meta:
+          external_location: "read_parquet('{{ env_var('RADAR_DATA', '../data') }}/interim/boamp_avis.parquet')"
+      - name: sirene
+        description: >
+          Enrichissement SIRENE partiel (API Recherche d'entreprises) des titulaires les plus importants,
+          mis en cache par `radar.sirene`.
+        meta:
+          external_location: "read_parquet('{{ env_var('RADAR_DATA', '../data') }}/interim/sirene.parquet')"

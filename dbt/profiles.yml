@@ -1,0 +1,7 @@
+radar_dw:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('RADAR_WAREHOUSE', '../data/warehouse/radar.duckdb') }}"
+      threads: 4
