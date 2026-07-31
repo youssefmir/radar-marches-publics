@@ -18,6 +18,33 @@ dedup as (
     ) = 1
 ),
 
+-- R2b : quasi-doublons publiés sous des identifiants différents (souvent par deux sources) :
+-- même acheteur, même objet, même montant, même date de notification, même titulaire.
+-- On conserve l'identifiant le plus petit (choix déterministe, cohérent entre co-titulaires).
+dedup_contenu as (
+    select *
+    from dedup
+    qualify row_number() over (
+        partition by acheteur_id, {{ normalise('objet') }}, montant, date_notification, coalesce(titulaire_id, '?')
+        order by marche_uid
+    ) = 1
+),
+
+-- R2c : accords-cadres multi-attributaires publiés avec un identifiant par titulaire :
+-- même acheteur, même objet (non vide), même montant, même date -> un seul marché à plusieurs titulaires.
+regroupe as (
+    select
+        * exclude (marche_uid),
+        marche_uid as marche_uid_source,
+        case
+            when length({{ normalise('objet') }}) >= 10
+                then min(marche_uid) over (
+                    partition by acheteur_id, {{ normalise('objet') }}, montant, date_notification)
+            else marche_uid
+        end as marche_uid
+    from dedup_contenu
+),
+
 enrichi as (
     select
         d.*,
@@ -39,7 +66,7 @@ enrichi as (
             else 'ok'
         end                                                                       as offres_statut,
         count(*) over (partition by d.marche_uid)                                 as nb_titulaires
-    from dedup d
+    from regroupe d
 ),
 
 -- R3b : répartition du montant entre co-titulaires.
@@ -57,8 +84,9 @@ montants as (
 )
 
 select
-    md5(marche_uid || '|' || coalesce(titulaire_id, '?'))                         as attribution_id,
+    md5(marche_uid_source || '|' || coalesce(titulaire_id, '?'))                  as attribution_id,
     marche_uid,
+    marche_uid_source,
     acheteur_id,
     acheteur_siret_valide,
     case
