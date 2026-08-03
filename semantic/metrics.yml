@@ -1,0 +1,166 @@
+# Couche sémantique : source unique des chiffres affichés par le site et l'application.
+# - `measures` : agrégats ADDITIFS calculés sur fct_attributions (sommables d'un sous-ensemble à l'autre).
+#   Les comptes de marchés utilisent `poids_marche` = 1 / nombre de co-titulaires, de sorte que
+#   la somme des poids d'un marché vaut 1 quelle que soit la découpe.
+# - `metrics` : indicateurs métier. `ratio` = numérateur / dénominateur de mesures additives
+#   (recalculables côté navigateur après filtrage) ; `sql` = indicateurs non additifs
+#   (médiane, HHI, comptes distincts) calculés uniquement dans l'entrepôt.
+version: 1
+model: fct_attributions
+periode: "Marchés notifiés du 1er janvier 2021 à la date de mise à jour des DECP (attribution initiale)"
+
+dimensions:
+  annee:              { sql: "f.annee", label: "Année de notification" }
+  departement:        { sql: "f.departement_code", label: "Département de l'acheteur" }
+  region:             { sql: "g.code_region", label: "Région de l'acheteur" }
+  division_cpv:       { sql: "c.division_code", label: "Division CPV (2 chiffres)" }
+  groupe_cpv:         { sql: "c.groupe_code", label: "Groupe CPV (3 chiffres)" }
+  procedure:          { sql: "f.procedure_code", label: "Famille de procédure" }
+  categorie_acheteur: { sql: "a.acheteur_categorie", label: "Type d'acheteur" }
+  type_marche:        { sql: "f.type_marche", label: "Type de marché" }
+  categorie_titulaire: { sql: "f.categorie_titulaire", label: "Catégorie d'entreprise du titulaire", grain: titulaire }
+  acheteur:           { sql: "f.acheteur_id", label: "Acheteur (SIRET)" }
+
+measures:
+  nb_marches:
+    sql: "sum(f.poids_marche)"
+    label: "Nombre de marchés"
+  nb_attributions:
+    sql: "count(*)"
+    label: "Nombre d'attributions (marché × titulaire)"
+  montant_total:
+    sql: "sum(f.montant_part)"
+    label: "Montant total attribué (€ HT)"
+  nb_marches_montant:
+    sql: "sum(case when f.montant_marche is not null then f.poids_marche end)"
+    label: "Marchés au montant exploitable"
+  poids_pme:
+    sql: "sum(case when f.categorie_titulaire = 'PME' then f.poids_marche end)"
+    label: "Marchés attribués à des PME (pondérés par co-titulaire)"
+  poids_categorie_connue:
+    sql: "sum(case when f.categorie_titulaire in ('PME', 'ETI', 'GE') then f.poids_marche end)"
+    label: "Marchés dont la catégorie du titulaire est connue"
+  montant_pme:
+    sql: "sum(case when f.categorie_titulaire = 'PME' then f.montant_part end)"
+    label: "Montant attribué à des PME"
+  montant_categorie_connue:
+    sql: "sum(case when f.categorie_titulaire in ('PME', 'ETI', 'GE') then f.montant_part end)"
+    label: "Montant attribué à des titulaires de catégorie connue"
+  nb_marches_offres:
+    sql: "sum(case when f.offres_recues is not null then f.poids_marche end)"
+    label: "Marchés dont le nombre d'offres est exploitable"
+  somme_offres:
+    sql: "sum(f.offres_recues * f.poids_marche)"
+    label: "Somme des offres reçues"
+  nb_offre_unique:
+    sql: "sum(case when f.offres_recues = 1 then f.poids_marche end)"
+    label: "Marchés n'ayant reçu qu'une offre"
+  nb_sans_publicite:
+    sql: "sum(case when f.procedure_code = 'SANS_PUB' then f.poids_marche end)"
+    label: "Marchés passés sans publicité ni mise en concurrence"
+  nb_procedure_connue:
+    sql: "sum(case when f.procedure_code <> 'NR' then f.poids_marche end)"
+    label: "Marchés dont la procédure est renseignée"
+
+metrics:
+  nombre_marches:
+    label: "Nombre de marchés"
+    type: ratio
+    numerator: nb_marches
+    format: entier
+    definition: >
+      Nombre de marchés distincts (identifiant `uid` de decp.info) dont l'attribution initiale a été notifiée
+      sur la période. Un marché à plusieurs co-titulaires compte pour 1.
+  montant_total:
+    label: "Montant total attribué"
+    type: ratio
+    numerator: montant_total
+    format: euros
+    definition: >
+      Somme des montants HT déclarés à l'attribution (montant forfaitaire ou maximum estimé de l'accord-cadre),
+      hors montants inexploitables (absents, nuls, valeurs de remplissage, aberrants). Pour un accord-cadre,
+      il s'agit d'un plafond, pas d'une dépense réalisée.
+  montant_moyen:
+    label: "Montant moyen par marché"
+    type: ratio
+    numerator: montant_total
+    denominator: nb_marches_montant
+    format: euros
+    definition: Montant total divisé par le nombre de marchés au montant exploitable.
+  part_pme_nombre:
+    label: "Part des PME (en nombre)"
+    type: ratio
+    numerator: poids_pme
+    denominator: poids_categorie_connue
+    format: pourcentage
+    definition: >
+      Part des marchés attribués à des PME (catégorie INSEE), parmi les marchés dont la catégorie du titulaire
+      est connue. Un marché à n co-titulaires compte 1/n pour chacun.
+  part_pme_montant:
+    label: "Part des PME (en montant)"
+    type: ratio
+    numerator: montant_pme
+    denominator: montant_categorie_connue
+    format: pourcentage
+    definition: Part du montant attribué à des PME parmi le montant attribué à des titulaires de catégorie connue.
+  offres_moyennes:
+    label: "Nombre moyen d'offres reçues"
+    type: ratio
+    numerator: somme_offres
+    denominator: nb_marches_offres
+    format: decimal
+    definition: Moyenne du nombre d'offres reçues, sur les marchés où ce nombre est renseigné et plausible (1 à 250).
+  taux_offre_unique:
+    label: "Taux de marchés à offre unique"
+    type: ratio
+    numerator: nb_offre_unique
+    denominator: nb_marches_offres
+    format: pourcentage
+    definition: >
+      Part des marchés n'ayant reçu qu'une seule offre, parmi les marchés où le nombre d'offres est renseigné.
+      Indicateur de concurrence du tableau de bord du marché unique de la Commission européenne
+      (« single bidder »), qui considère un taux supérieur à 20 % comme insatisfaisant.
+  part_sans_publicite:
+    label: "Part des marchés sans publicité"
+    type: ratio
+    numerator: nb_sans_publicite
+    denominator: nb_procedure_connue
+    format: pourcentage
+    definition: Part des marchés passés sans publicité ni mise en concurrence préalable, parmi les procédures renseignées.
+  taux_renseignement_offres:
+    label: "Taux de renseignement du nombre d'offres"
+    type: ratio
+    numerator: nb_marches_offres
+    denominator: nb_marches
+    format: pourcentage
+    definition: Part des marchés dont le nombre d'offres est renseigné et plausible (indicateur de qualité des données).
+  montant_median:
+    label: "Montant médian d'un marché"
+    type: sql
+    grain: marche
+    sql: "median(montant_marche)"
+    format: euros
+    definition: Médiane des montants exploitables, un marché comptant une fois (non additif, calculé dans l'entrepôt).
+  hhi_titulaires:
+    label: "Indice HHI de concentration des titulaires"
+    type: sql
+    grain: hhi
+    format: entier
+    definition: >
+      Indice de Herfindahl-Hirschman = somme des carrés des parts de marché (en montant, en %) des titulaires
+      du périmètre, de 0 (atomisé) à 10 000 (monopole). Repères usuels : < 1 500 peu concentré,
+      1 500–2 500 modérément concentré, > 2 500 très concentré.
+  nb_acheteurs:
+    label: "Nombre d'acheteurs"
+    type: sql
+    grain: attribution
+    sql: "count(distinct f.acheteur_id)"
+    format: entier
+    definition: Nombre d'acheteurs distincts (SIRET) ayant notifié au moins un marché.
+  nb_titulaires:
+    label: "Nombre de titulaires"
+    type: sql
+    grain: attribution
+    sql: "count(distinct case when f.titulaire_key <> 'INCONNU' then f.titulaire_key end)"
+    format: entier
+    definition: Nombre d'entreprises titulaires distinctes (identifiant SIRET ou autre).
