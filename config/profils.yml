@@ -1,0 +1,56 @@
+# Profils d'entreprises FICTIVES utilisés pour la démonstration.
+# Toute ressemblance avec une entreprise existante serait fortuite.
+profils:
+  - id: ardoise-batiment
+    nom: Ardoise Bâtiment
+    fictif: true
+    secteur: BTP – gros œuvre et rénovation énergétique
+    effectif: 80
+    ville: Montreuil (93)
+    description: >
+      Entreprise générale de bâtiment spécialisée dans le gros œuvre, la maçonnerie et la rénovation
+      énergétique des bâtiments publics : isolation thermique par l'extérieur, remplacement de menuiseries,
+      réhabilitation et restructuration d'écoles, de gymnases et de logements sociaux.
+    cpv: ["45223220", "45262500", "45210000", "45321000", "45421000", "45453000", "45454000"]
+    departements: ["75", "77", "78", "91", "92", "93", "94", "95"]
+    montant_min: 100000
+    montant_max: 3000000
+  - id: analytica-seine
+    nom: Analytica Seine
+    fictif: true
+    secteur: ESN – data, BI et décisionnel
+    effectif: 40
+    ville: Lyon (69)
+    description: >
+      Entreprise de services numériques spécialisée en données : entrepôts de données, informatique
+      décisionnelle, tableaux de bord, intégration et qualité des données, développement d'applications
+      et tierce maintenance applicative, accompagnement à l'intelligence artificielle.
+    cpv: ["72000000", "72222300", "72260000", "72310000", "72316000", "72322000", "48610000"]
+    departements: ["69", "01", "38", "42", "26", "73", "74", "63"]
+    montant_min: 20000
+    montant_max: 800000
+  - id: nacre-proprete
+    nom: Nacre Propreté
+    fictif: true
+    secteur: Propreté et nettoyage
+    effectif: 200
+    ville: Lille (59)
+    description: >
+      Entreprise de propreté : nettoyage et entretien de locaux administratifs, d'écoles et d'équipements
+      sportifs, nettoyage de vitres, remise en état après travaux, gestion des déchets courants
+      et services d'hygiène.
+    cpv: ["90910000", "90911000", "90911200", "90911300", "90919200", "90919300"]
+    departements: ["59", "62", "80", "60", "02"]
+    montant_min: 50000
+    montant_max: 2000000
+
+# Pondérations du score hybride (somme = 1). Partie texte : poids égaux sémantique / lexical, car alpha = 0,5
+# maximise le nDCG@10 sur l'échantillon de réglage (docs/evaluation-radar.md) ; les autres poids sont des choix métier explicites (docs/decisions.md).
+poids:
+  semantique: 0.20
+  lexical: 0.20
+  cpv: 0.25
+  geographie: 0.15
+  taille: 0.08
+  concurrence: 0.06
+  sortant: 0.06
