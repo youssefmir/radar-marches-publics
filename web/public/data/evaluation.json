@@ -1,0 +1,499 @@
+{
+ "snapshot_date": "2026-11-01",
+ "corpus": {
+  "avis_avec_cpv": 7187,
+  "reglage": 2098,
+  "test": 5089
+ },
+ "requetes_test": {
+  "Q1 profil CPV": 223,
+  "Q2 avis exemple": 295
+ },
+ "alpha": 0.5,
+ "courbe_alpha": [
+  {
+   "alpha": 0.0,
+   "ndcg@10_reglage": 0.339
+  },
+  {
+   "alpha": 0.1,
+   "ndcg@10_reglage": 0.3455
+  },
+  {
+   "alpha": 0.2,
+   "ndcg@10_reglage": 0.3486
+  },
+  {
+   "alpha": 0.3,
+   "ndcg@10_reglage": 0.3513
+  },
+  {
+   "alpha": 0.4,
+   "ndcg@10_reglage": 0.3524
+  },
+  {
+   "alpha": 0.5,
+   "ndcg@10_reglage": 0.3542
+  },
+  {
+   "alpha": 0.6,
+   "ndcg@10_reglage": 0.3475
+  },
+  {
+   "alpha": 0.7,
+   "ndcg@10_reglage": 0.3371
+  },
+  {
+   "alpha": 0.8,
+   "ndcg@10_reglage": 0.3198
+  },
+  {
+   "alpha": 0.9,
+   "ndcg@10_reglage": 0.2931
+  },
+  {
+   "alpha": 1.0,
+   "ndcg@10_reglage": 0.2609
+  }
+ ],
+ "resultats": [
+  {
+   "jeu": "Q1 profil CPV",
+   "methode": "BM25",
+   "requetes": 223,
+   "p@10": 0.302,
+   "p@10_ic95": [
+    0.267,
+    0.339
+   ],
+   "ndcg@10": 0.322,
+   "ndcg@10_ic95": [
+    0.285,
+    0.36
+   ],
+   "r@50": 0.328,
+   "r@50_ic95": [
+    0.3,
+    0.358
+   ]
+  },
+  {
+   "jeu": "Q1 profil CPV",
+   "methode": "Embeddings MiniLM",
+   "requetes": 223,
+   "p@10": 0.153,
+   "p@10_ic95": [
+    0.129,
+    0.179
+   ],
+   "ndcg@10": 0.165,
+   "ndcg@10_ic95": [
+    0.139,
+    0.193
+   ],
+   "r@50": 0.175,
+   "r@50_ic95": [
+    0.156,
+    0.194
+   ]
+  },
+  {
+   "jeu": "Q1 profil CPV",
+   "methode": "Embeddings e5-small",
+   "requetes": 223,
+   "p@10": 0.168,
+   "p@10_ic95": [
+    0.142,
+    0.196
+   ],
+   "ndcg@10": 0.185,
+   "ndcg@10_ic95": [
+    0.156,
+    0.214
+   ],
+   "r@50": 0.194,
+   "r@50_ic95": [
+    0.172,
+    0.216
+   ]
+  },
+  {
+   "jeu": "Q1 profil CPV",
+   "methode": "Hybride (alpha=0.5, réglé)",
+   "requetes": 223,
+   "p@10": 0.313,
+   "p@10_ic95": [
+    0.277,
+    0.348
+   ],
+   "ndcg@10": 0.338,
+   "ndcg@10_ic95": [
+    0.298,
+    0.375
+   ],
+   "r@50": 0.345,
+   "r@50_ic95": [
+    0.316,
+    0.374
+   ]
+  },
+  {
+   "jeu": "Q1 profil CPV",
+   "methode": "Hybride RRF",
+   "requetes": 223,
+   "p@10": 0.288,
+   "p@10_ic95": [
+    0.253,
+    0.322
+   ],
+   "ndcg@10": 0.311,
+   "ndcg@10_ic95": [
+    0.274,
+    0.346
+   ],
+   "r@50": 0.331,
+   "r@50_ic95": [
+    0.302,
+    0.359
+   ]
+  },
+  {
+   "jeu": "Q2 avis exemple",
+   "methode": "BM25",
+   "requetes": 295,
+   "p@10": 0.382,
+   "p@10_ic95": [
+    0.343,
+    0.421
+   ],
+   "ndcg@10": 0.404,
+   "ndcg@10_ic95": [
+    0.366,
+    0.444
+   ],
+   "r@50": 0.133,
+   "r@50_ic95": [
+    0.116,
+    0.151
+   ]
+  },
+  {
+   "jeu": "Q2 avis exemple",
+   "methode": "Embeddings MiniLM",
+   "requetes": 295,
+   "p@10": 0.248,
+   "p@10_ic95": [
+    0.215,
+    0.281
+   ],
+   "ndcg@10": 0.263,
+   "ndcg@10_ic95": [
+    0.228,
+    0.296
+   ],
+   "r@50": 0.072,
+   "r@50_ic95": [
+    0.063,
+    0.082
+   ]
+  },
+  {
+   "jeu": "Q2 avis exemple",
+   "methode": "Embeddings e5-small",
+   "requetes": 295,
+   "p@10": 0.33,
+   "p@10_ic95": [
+    0.294,
+    0.365
+   ],
+   "ndcg@10": 0.358,
+   "ndcg@10_ic95": [
+    0.321,
+    0.393
+   ],
+   "r@50": 0.097,
+   "r@50_ic95": [
+    0.087,
+    0.108
+   ]
+  },
+  {
+   "jeu": "Q2 avis exemple",
+   "methode": "Hybride (alpha=0.5, réglé)",
+   "requetes": 295,
+   "p@10": 0.404,
+   "p@10_ic95": [
+    0.367,
+    0.444
+   ],
+   "ndcg@10": 0.427,
+   "ndcg@10_ic95": [
+    0.39,
+    0.467
+   ],
+   "r@50": 0.136,
+   "r@50_ic95": [
+    0.119,
+    0.154
+   ]
+  },
+  {
+   "jeu": "Q2 avis exemple",
+   "methode": "Hybride RRF",
+   "requetes": 295,
+   "p@10": 0.398,
+   "p@10_ic95": [
+    0.361,
+    0.437
+   ],
+   "ndcg@10": 0.421,
+   "ndcg@10_ic95": [
+    0.384,
+    0.461
+   ],
+   "r@50": 0.135,
+   "r@50_ic95": [
+    0.118,
+    0.151
+   ]
+  }
+ ],
+ "erreurs_q1": [
+  {
+   "classe": "0341",
+   "libelle": "Bois",
+   "ndcg@10": 0.0,
+   "n_pertinents": 8,
+   "faux_positifs": [
+    {
+     "objet": "Traitement du bois issus des déchetteries du SMICTOM LGB (Bois de catégorie A, B et AB)",
+     "cpv": [
+      "90513000 Services de traitement et d'élimination des ordures ménagères et des déchets non dangereux"
+     ]
+    },
+    {
+     "objet": "Création d'un réseau de chaleur chaufferie bois Pont du Casse",
+     "cpv": [
+      "45251200 Travaux de construction de centrales de chauffage",
+      "45112500 Travaux de terrassement"
+     ]
+    },
+    {
+     "objet": "Accord-cadre à bons de commande pour l'assistance technique, l'entretien, la maintenance et le dépannage pour la chaufferie bois et le résea",
+     "cpv": [
+      "50720000 Services de réparation et d'entretien de chauffage central"
+     ]
+    }
+   ]
+  },
+  {
+   "classe": "2245",
+   "libelle": "Imprimés infalsifiables",
+   "ndcg@10": 0.0,
+   "n_pertinents": 10,
+   "faux_positifs": [
+    {
+     "objet": "Acquisition d'ouvrages imprimés français et étrangers pour l'Université d'Angers",
+     "cpv": [
+      "22110000 Livres imprimés",
+      "22100000 Livres, brochures et dépliants imprimés"
+     ]
+    },
+    {
+     "objet": "Prestations de formations et de présentation aux examens de permis de conduire poids lourds de catégorie C, super lourds de catégorie Ce, re",
+     "cpv": [
+      "80511000 Services de formation du personnel",
+      "79632000 Services de formation de personnel"
+     ]
+    },
+    {
+     "objet": "Fourniture de monographies pour le compte de l’École nationale des chartes – (ENC/PSL)",
+     "cpv": [
+      "22110000 Livres imprimés"
+     ]
+    }
+   ]
+  },
+  {
+   "classe": "3376",
+   "libelle": "Papier hygiénique, mouchoirs, essuie-mains et serviettes de table",
+   "ndcg@10": 0.0,
+   "n_pertinents": 11,
+   "faux_positifs": [
+    {
+     "objet": "Fourniture de produits d'entretien et d'hygiène",
+     "cpv": [
+      "39830000 Produits de nettoyage",
+      "33141117 Ouate"
+     ]
+    },
+    {
+     "objet": "Acquisition d'articles d'hygiène et produits d'entretien",
+     "cpv": [
+      "39800000 Produits de nettoyage et produits à polir",
+      "39831200 Détergents"
+     ]
+    },
+    {
+     "objet": "LOCATION ET ENTRETIEN DE BOBINES EN TISSU ET DE RECEPTACLES D'HYGIENE FEMININE POUR LA VILLE DE BOUGUENAIS",
+     "cpv": [
+      "90900000 Services de nettoyage et d'hygiène"
+     ]
+    }
+   ]
+  },
+  {
+   "classe": "3152",
+   "libelle": "Lampes et appareils d'éclairage",
+   "ndcg@10": 0.0,
+   "n_pertinents": 15,
+   "faux_positifs": [
+    {
+     "objet": "www.marches-securises.fr",
+     "cpv": [
+      "45316110 Installation de matériel d'éclairage public",
+      "50232000 Entretien d'installations d'éclairage public et de feux de signalisation"
+     ]
+    },
+    {
+     "objet": "UPEP de Langroise - Remplacement des membranes filtrantes par des lampes UV et travaux divers",
+     "cpv": [
+      "45252120 Travaux de construction d'installations de traitement des eaux"
+     ]
+    },
+    {
+     "objet": "Installation et entretien de matériel d'éclairage public du port de Gennevilliers",
+     "cpv": [
+      "45241600 Installation de matériel d'éclairage portuaire"
+     ]
+    }
+   ]
+  },
+  {
+   "classe": "3741",
+   "libelle": "Équipements de sports de plein air",
+   "ndcg@10": 0.0,
+   "n_pertinents": 9,
+   "faux_positifs": [
+    {
+     "objet": "Location de matériels et équipements audiovisuels",
+     "cpv": [
+      "32321200 Équipement audiovisuel"
+     ]
+    },
+    {
+     "objet": "Fourniture de matériels pour les sports collectifs et sports de raquette et prestations associées",
+     "cpv": [
+      "37450000 Équipement pour sports de plein air et sur courts"
+     ]
+    },
+    {
+     "objet": "LILLE NEIGE 2027",
+     "cpv": [
+      "92330000 Services de zones récréatives",
+      "37535291 Équipement pour l'escalade"
+     ]
+    }
+   ]
+  },
+  {
+   "classe": "5073",
+   "libelle": "Services de réparation et d'entretien de groupes de réfrigération",
+   "ndcg@10": 0.0,
+   "n_pertinents": 14,
+   "faux_positifs": [
+    {
+     "objet": "Services de réparation et d'entretien du navire Granville pendant son arrêt technique début 2027",
+     "cpv": [
+      "50241100 Services de réparation de navires"
+     ]
+    },
+    {
+     "objet": "Refonte partielle des installations frigorifiques de la criée du port d'Erquy - Réfrigération",
+     "cpv": [
+      "45331231 Travaux d'installation de matériel de réfrigération"
+     ]
+    },
+    {
+     "objet": "Entretien et réparation de divers véhicules de la flotte automobile de la ville",
+     "cpv": [
+      "50100000 Services de réparation et d'entretien de véhicules et d'équipements associés et services connexes",
+      "34100000 Véhicules à moteur"
+     ]
+    }
+   ]
+  },
+  {
+   "classe": "5053",
+   "libelle": "Services de réparation et d'entretien de machines",
+   "ndcg@10": 0.0,
+   "n_pertinents": 26,
+   "faux_positifs": [
+    {
+     "objet": "Travaux entretien courant des bâtiments",
+     "cpv": [
+      "45332000 Travaux de plomberie et de pose de conduits d'évacuation",
+      "45261420 Travaux d'étanchéification"
+     ]
+    },
+    {
+     "objet": "Entretien et réparation de divers véhicules de la flotte automobile de la ville",
+     "cpv": [
+      "50100000 Services de réparation et d'entretien de véhicules et d'équipements associés et services connexes",
+      "34100000 Véhicules à moteur"
+     ]
+    },
+    {
+     "objet": "Services de réparation et d'entretien du navire Granville pendant son arrêt technique début 2027",
+     "cpv": [
+      "50241100 Services de réparation de navires"
+     ]
+    }
+   ]
+  },
+  {
+   "classe": "5061",
+   "libelle": "Services de réparation et d'entretien du matériel de sécurité",
+   "ndcg@10": 0.0,
+   "n_pertinents": 22,
+   "faux_positifs": [
+    {
+     "objet": "Services de réparation et d'entretien du navire Granville pendant son arrêt technique début 2027",
+     "cpv": [
+      "50241100 Services de réparation de navires"
+     ]
+    },
+    {
+     "objet": "Fourniture et livraison de produits et de matériels d'entretien",
+     "cpv": [
+      "39830000 Produits de nettoyage"
+     ]
+    },
+    {
+     "objet": "Fourniture et livraison de pièces destinées à l'entretien des réseaux d'eau potable et d'assainissement collectif de la CCVBA",
+     "cpv": [
+      "44165000 Tuyaux, conduites ascendantes et manchons",
+      "44470000 Produits en fonte"
+     ]
+    }
+   ]
+  }
+ ],
+ "q1_par_famille": [
+  {
+   "famille": "Fournitures",
+   "p@10": 0.351,
+   "ndcg@10": 0.384
+  },
+  {
+   "famille": "Services",
+   "p@10": 0.262,
+   "ndcg@10": 0.285
+  },
+  {
+   "famille": "Travaux",
+   "p@10": 0.425,
+   "ndcg@10": 0.422
+  }
+ ]
+}
