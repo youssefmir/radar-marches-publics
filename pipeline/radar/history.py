@@ -26,8 +26,7 @@ def build() -> None:
             select c.acheteur_id, c.groupe_cpv, c.nb_marches, c.nb_marches_offres,
                    round(c.offres_moyennes, 2) as offres_moyennes, round(c.taux_offre_unique, 3) as taux_offre_unique,
                    c.montant_median, c.derniere_attribution,
-                   case when t.est_entrepreneur_individuel or c.titulaire_principal_key = 'INCONNU' then null
-                        else t.titulaire_nom_affichable end as titulaire_principal_nom,
+                   case when t.nom_publiable then t.titulaire_nom_affichable end as titulaire_principal_nom,
                    t.categorie as titulaire_principal_categorie,
                    c.titulaire_principal_nb_marches, round(c.titulaire_principal_part, 3) as titulaire_principal_part
             from main.int_concurrence_acheteur_cpv c

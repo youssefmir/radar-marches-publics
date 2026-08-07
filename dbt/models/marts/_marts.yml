@@ -88,6 +88,9 @@ models:
           - accepted_values:
               arguments:
                 values: [PME, ETI, GE, Inconnue]
+      - name: nom_publiable
+        description: Vrai si le nom peut être affiché (personne morale avérée) ; faux pour toute personne physique possible.
+        data_tests: [not_null]
   - name: dim_cpv
     columns:
       - name: code_cpv

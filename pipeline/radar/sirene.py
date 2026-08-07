@@ -119,6 +119,12 @@ def write_parquet(cache: dict[str, dict]) -> None:
     df = pd.DataFrame(rows, columns=COLUMNS) if rows else pd.DataFrame(columns=COLUMNS)
     df["est_entrepreneur_individuel"] = df["est_entrepreneur_individuel"].astype("boolean")
     df.to_parquet(OUT, index=False)
+    # Copie versionnée : pour les entrepreneurs individuels (personnes physiques), seuls le SIREN et
+    # l'indicateur sont conservés, jamais le nom.
+    pub = df.copy()
+    ei = pub["est_entrepreneur_individuel"].fillna(False).astype(bool)
+    pub.loc[ei, ["nom_complet", "activite_principale", "region_siege", "date_creation"]] = None
+    pub.to_parquet(config.DATA / "history" / "sirene_titulaires.parquet", index=False, compression="zstd")
     print(f"{len(rows)} unités SIRENE écrites dans {OUT}")
 
 
