@@ -231,7 +231,7 @@ def go_no_go(row: pd.Series, profil: Profil, today: dt.date) -> list[dict[str, s
             {
                 "critere": "Date limite",
                 "statut": st,
-                "detail": f"{lim.date().isoformat()} — {jours} jour(s) pour répondre",
+                "detail": f"{lim.date().strftime('%d/%m/%Y')} — {jours} jour(s) pour répondre",
             }
         )
     proc = (_s(row.get("procedure")) or "").strip()
