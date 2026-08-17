@@ -14,7 +14,10 @@ dedup as (
     from base
     qualify row_number() over (
         partition by marche_uid, coalesce(titulaire_id, '?')
-        order by date_publication desc nulls last, source_dataset
+        -- départage total : le résultat ne dépend jamais de l'ordre de lecture du fichier
+        order by date_publication desc nulls last, source_dataset, montant nulls last, objet nulls last,
+                 date_notification, offres_recues nulls last, procedure_brute nulls last,
+                 titulaire_nom nulls last, titulaire_categorie nulls last, code_cpv, duree_mois nulls last
     ) = 1
 ),
 

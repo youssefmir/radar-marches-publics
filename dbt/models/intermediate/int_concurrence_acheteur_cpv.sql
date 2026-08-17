@@ -3,10 +3,10 @@
 with m as (
     select
         marche_uid,
-        any_value(acheteur_id)            as acheteur_id,
-        any_value(substr(code_cpv, 1, 3)) as groupe_cpv,
-        any_value(offres_recues)          as offres_recues,
-        any_value(montant_marche)         as montant_marche,
+        min(acheteur_id)            as acheteur_id,
+        min(substr(code_cpv, 1, 3)) as groupe_cpv,
+        max(offres_recues)          as offres_recues,
+        max(montant_marche)         as montant_marche,
         max(date_notification)            as date_notification
     from {{ ref('int_attributions') }}
     group by 1
