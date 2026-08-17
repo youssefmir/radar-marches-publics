@@ -28,14 +28,23 @@ def compute(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
     q["date_max_notification"] = str(_one(con, "select max(date_notification) from main.int_attributions"))
 
     # Entonnoir des règles (lignes marché × titulaire)
-    hors_periode = _one(con, """select count(*) from main.stg_decp__attributions
-        where date_notification is null or date_notification < date '2021-01-01' or date_notification > current_date""")
-    sans_acheteur = _one(con, """select count(*) from main.stg_decp__attributions
-        where date_notification between date '2021-01-01' and current_date and acheteur_id is null""")
+    hors_periode = _one(
+        con,
+        """select count(*) from main.stg_decp__attributions
+        where date_notification is null or date_notification < date '2021-01-01' or date_notification > current_date""",
+    )
+    sans_acheteur = _one(
+        con,
+        """select count(*) from main.stg_decp__attributions
+        where date_notification between date '2021-01-01' and current_date and acheteur_id is null""",
+    )
     perimetre = q["lignes_attribution_initiale"] - hors_periode - sans_acheteur
-    apres_r2 = _one(con, """select count(*) from (select distinct marche_uid, coalesce(titulaire_id, '?')
+    apres_r2 = _one(
+        con,
+        """select count(*) from (select distinct marche_uid, coalesce(titulaire_id, '?')
         from main.stg_decp__attributions
-        where date_notification between date '2021-01-01' and current_date and acheteur_id is not null)""")
+        where date_notification between date '2021-01-01' and current_date and acheteur_id is not null)""",
+    )
     final = _one(con, "select count(*) from main.int_attributions")
     uids_source = _one(con, "select count(distinct marche_uid_source) from main.int_attributions")
     marches = _one(con, "select count(distinct marche_uid) from main.int_attributions")
@@ -48,27 +57,41 @@ def compute(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
         {"etape": "R2b – quasi-doublons (même acheteur, objet, montant, date, titulaire)", "lignes": final - apres_r2},
         {"etape": "Attributions retenues (fct_attributions)", "lignes": final, "total": True},
     ]
-    q["marches"] = {"identifiants_source": uids_source, "marches_apres_r2c": marches,
-                    "fusionnes_r2c": uids_source - marches}
+    q["marches"] = {
+        "identifiants_source": uids_source,
+        "marches_apres_r2c": marches,
+        "fusionnes_r2c": uids_source - marches,
+    }
 
     def dist(col: str, amount: bool = False) -> list[dict]:
         extra = ", sum(montant_declare) filter (where montant_declare < 1e10) as montant" if amount else ""
-        rows = con.execute(f"select {col} as statut, count(*) as n {extra} from main.int_attributions group by 1 order by 2 desc").df()
+        rows = con.execute(
+            f"select {col} as statut, count(*) as n {extra} from main.int_attributions group by 1 order by 2 desc"
+        ).df()
         rows["part"] = rows["n"] / final
         return rows.to_dict("records")
 
     q["montant_statut"] = dist("montant_statut", amount=True)
     q["offres_statut"] = dist("offres_statut")
-    q["montant_suspect"] = con.execute("""select count(*) as n, sum(montant_part) as montant,
+    q["montant_suspect"] = (
+        con.execute("""select count(*) as n, sum(montant_part) as montant,
         sum(montant_part) / (select sum(montant_part) from main.int_attributions) as part_montant
-        from main.int_attributions where montant_anomalie = 'suspect'""").df().to_dict("records")[0]
-    q["siret"] = con.execute("""select
+        from main.int_attributions where montant_anomalie = 'suspect'""")
+        .df()
+        .to_dict("records")[0]
+    )
+    q["siret"] = (
+        con.execute("""select
         avg(case when acheteur_siret_valide then 1.0 else 0 end) as acheteur_valide,
         avg(case when titulaire_type_id = 'SIRET' then 1.0 else 0 end) as titulaire_type_siret,
         avg(case when titulaire_siret_valide then 1.0 else 0 end) as titulaire_siret_valide,
         count(*) filter (where titulaire_type_id = 'SIRET' and not titulaire_siret_valide) as titulaire_siret_invalides
-        from main.int_attributions""").df().to_dict("records")[0]
-    comp = con.execute("""select
+        from main.int_attributions""")
+        .df()
+        .to_dict("records")[0]
+    )
+    comp = (
+        con.execute("""select
         avg((code_cpv is not null)::int) as code_cpv,
         avg((code_cpv in (select code_cpv from main.dim_cpv))::int) as code_cpv_dans_nomenclature,
         avg((procedure_code <> 'NR')::int) as procedure,
@@ -78,18 +101,29 @@ def compute(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
         avg((objet is not null and length(objet) > 5)::int) as objet,
         avg((duree_mois is not null)::int) as duree_mois,
         avg((acheteur_departement_code is not null)::int) as departement_acheteur
-        from main.int_attributions""").df().to_dict("records")[0]
+        from main.int_attributions""")
+        .df()
+        .to_dict("records")[0]
+    )
     q["completude"] = comp
-    q["par_annee_source"] = con.execute("""select annee,
+    q["par_annee_source"] = (
+        con.execute("""select annee,
         count(*) as lignes,
         avg((source_dataset = 'pes_marche_2024')::int) as part_pes_2024,
         avg((offres_statut = 'ok')::int) as offres_exploitables
-        from main.int_attributions group by 1 order by 1""").df().to_dict("records")
-    q["sirene"] = con.execute("""select count(*) filter (where enrichi_sirene) as titulaires_enrichis,
+        from main.int_attributions group by 1 order by 1""")
+        .df()
+        .to_dict("records")
+    )
+    q["sirene"] = (
+        con.execute("""select count(*) filter (where enrichi_sirene) as titulaires_enrichis,
         count(*) as titulaires,
         sum(montant_total) filter (where enrichi_sirene) / sum(montant_total) as part_montant_couverte,
         count(*) filter (where est_entrepreneur_individuel) as entrepreneurs_individuels_detectes
-        from main.dim_titulaire where titulaire_key <> 'INCONNU'""").df().to_dict("records")[0]
+        from main.dim_titulaire where titulaire_key <> 'INCONNU'""")
+        .df()
+        .to_dict("records")[0]
+    )
     return q
 
 
@@ -120,7 +154,9 @@ def markdown(q: dict[str, Any]) -> str:
     ]
     for e in q["entonnoir"]:
         v = _n(e["lignes"])
-        L.append(f"| {'**' + e['etape'] + '**' if e.get('total') else e['etape']} | {'**' + v + '**' if e.get('total') else v} |")
+        L.append(
+            f"| {'**' + e['etape'] + '**' if e.get('total') else e['etape']} | {'**' + v + '**' if e.get('total') else v} |"
+        )
     m = q["marches"]
     L += [
         "",
@@ -177,7 +213,9 @@ def markdown(q: dict[str, Any]) -> str:
         "|---|---:|---:|---:|",
     ]
     for r in q["par_annee_source"]:
-        L.append(f"| {r['annee']} | {_n(r['lignes'])} | {_pct(r['part_pes_2024'])} | {_pct(r['offres_exploitables'])} |")
+        L.append(
+            f"| {r['annee']} | {_n(r['lignes'])} | {_pct(r['part_pes_2024'])} | {_pct(r['offres_exploitables'])} |"
+        )
     se = q["sirene"]
     L += [
         "",

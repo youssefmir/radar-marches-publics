@@ -60,9 +60,7 @@ class Semantic:
         sel_dims = [f"{dims[d]['sql']} as {d}" for d in by]
         w, params = self._where(where)
         group = f"group by {', '.join(str(i + 1) for i in range(len(by)))}" if by else ""
-        base = self.con.execute(
-            f"select {', '.join(sel_dims + [self.measures_sql()])} {FROM} {w} {group}", params
-        ).df()
+        base = self.con.execute(f"select {', '.join(sel_dims + [self.measures_sql()])} {FROM} {w} {group}", params).df()
         out = base[by].copy() if by else pd.DataFrame(index=base.index)
         for m in metrics:
             spec = self.spec["metrics"][m]
@@ -89,9 +87,11 @@ class Semantic:
             sql = f"select {', '.join(by + [spec['sql'] + ' as ' + m])} from ({inner})"
             sql += f" group by {gb}" if by else ""
         elif spec["grain"] == "hhi":
-            inner = (f"select {', '.join(sel + ['f.titulaire_key', 'sum(f.montant_part) as mt'])} {FROM} {w}"
-                     f" {'and' if w else 'where'} f.titulaire_key <> 'INCONNU' and f.montant_part is not null"
-                     f" group by {', '.join([str(i + 1) for i in range(len(by))] + ['f.titulaire_key'])}")
+            inner = (
+                f"select {', '.join(sel + ['f.titulaire_key', 'sum(f.montant_part) as mt'])} {FROM} {w}"
+                f" {'and' if w else 'where'} f.titulaire_key <> 'INCONNU' and f.montant_part is not null"
+                f" group by {', '.join([str(i + 1) for i in range(len(by))] + ['f.titulaire_key'])}"
+            )
             part = f"100.0 * mt / sum(mt) over ({'partition by ' + gb if by else ''})"
             sql = f"select {', '.join(by + [f'sum(power(p, 2)) as {m}'])} from (select *, {part} as p from ({inner}))"
             sql += f" group by {gb}" if by else ""
