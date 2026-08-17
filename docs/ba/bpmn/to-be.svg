@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1550 560" width="1550" height="560" font-family="Public Sans, Helvetica, Arial, sans-serif" font-size="12">
+<rect width="1550" height="560" fill="#FDFDFB"/>
+<defs><marker id="arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#14213D"/></marker></defs>
+<text x="60" y="26" font-size="15" font-weight="700" fill="#14213D" font-family="Bitter, Georgia, serif">TO-BE — Veille outillée par Radar Marchés Publics</text>
+<rect x="60" y="40" width="1470" height="450" fill="none" stroke="#14213D"/>
+<rect x="60" y="40" width="30" height="150" fill="#14213D"/>
+<text transform="translate(80 115.0) rotate(-90)" text-anchor="middle" fill="#FDFDFB" font-weight="600">Dirigeant</text>
+<rect x="60" y="190" width="30" height="150" fill="#14213D"/>
+<text transform="translate(80 265.0) rotate(-90)" text-anchor="middle" fill="#FDFDFB" font-weight="600">Chargé d'affaires</text>
+<line x1="60" y1="190" x2="1530" y2="190" stroke="#14213D"/>
+<rect x="60" y="340" width="30" height="150" fill="#14213D"/>
+<text transform="translate(80 415.0) rotate(-90)" text-anchor="middle" fill="#FDFDFB" font-weight="600">Radar (système)</text>
+<line x1="60" y1="340" x2="1530" y2="340" stroke="#14213D"/>
+<path d="M215,283 L215,415 L320,415" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M450,415 L490,415" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M620,415 L660,415" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M725,383 L725,265 L830,265" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M895,233 L895,115 L1040,115" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1065,140 L1065,265 L1170,265" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1071" y="259" fill="#5C6470" font-size="11">go</text>
+<path d="M1090,115 L1217,115" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1096" y="109" fill="#5C6470" font-size="11">no-go</text>
+<path d="M1300,265 L1387,265" fill="none" stroke="#14213D" stroke-width="1.3" marker-end="url(#arr)"/>
+<circle cx="215.0" cy="265.0" r="18" fill="#FDFDFB" stroke="#14213D" stroke-width="1.5"/>
+<text x="215.0" y="239.0" text-anchor="middle" fill="#14213D" font-size="11">Profil défini une fois</text>
+<rect x="320.0" y="383.0" width="130" height="64" fill="#FFF4EA" stroke="#E8731A" stroke-width="1.5"/>
+<text x="385.0" y="412.0" text-anchor="middle" fill="#14213D">Collecter les avis</text>
+<text x="385.0" y="426.0" text-anchor="middle" fill="#14213D">ouverts (BOAMP)</text>
+<text x="326.0" y="396.0" fill="#E8731A" font-size="10" font-weight="700">⚙</text>
+<rect x="490.0" y="383.0" width="130" height="64" fill="#FFF4EA" stroke="#E8731A" stroke-width="1.5"/>
+<text x="555.0" y="412.0" text-anchor="middle" fill="#14213D">Classer : score</text>
+<text x="555.0" y="426.0" text-anchor="middle" fill="#14213D">hybride expliqué</text>
+<text x="496.0" y="396.0" fill="#E8731A" font-size="10" font-weight="700">⚙</text>
+<rect x="660.0" y="383.0" width="130" height="64" fill="#FFF4EA" stroke="#E8731A" stroke-width="1.5"/>
+<text x="725.0" y="405.0" text-anchor="middle" fill="#14213D">Qualifier : grille</text>
+<text x="725.0" y="419.0" text-anchor="middle" fill="#14213D">go/no-go +</text>
+<text x="725.0" y="433.0" text-anchor="middle" fill="#14213D">historique DECP</text>
+<text x="666.0" y="396.0" fill="#E8731A" font-size="10" font-weight="700">⚙</text>
+<rect x="830.0" y="233.0" width="130" height="64" fill="#FDFDFB" stroke="#14213D" stroke-width="1.5"/>
+<text x="895.0" y="262.0" text-anchor="middle" fill="#14213D">Revoir les 30</text>
+<text x="895.0" y="276.0" text-anchor="middle" fill="#14213D">premiers avis</text>
+<path d="M1065.0,90.0 L1090.0,115.0 L1065.0,140.0 L1040.0,115.0 Z" fill="#FDFDFB" stroke="#14213D" stroke-width="1.5"/>
+<text x="1065.0" y="120.0" text-anchor="middle" font-weight="700" fill="#14213D">×</text>
+<text x="1065.0" y="82.0" text-anchor="middle" fill="#14213D" font-size="11">Go ?</text>
+<rect x="1170.0" y="233.0" width="130" height="64" fill="#FDFDFB" stroke="#14213D" stroke-width="1.5"/>
+<text x="1235.0" y="262.0" text-anchor="middle" fill="#14213D">Monter le dossier</text>
+<text x="1235.0" y="276.0" text-anchor="middle" fill="#14213D">(lot ciblé)</text>
+<circle cx="1235.0" cy="115.0" r="18" fill="#FDFDFB" stroke="#14213D" stroke-width="4"/>
+<text x="1235.0" y="149.0" text-anchor="middle" fill="#14213D" font-size="11">Écarté, motif tracé</text>
+<circle cx="1405.0" cy="265.0" r="18" fill="#FDFDFB" stroke="#14213D" stroke-width="4"/>
+<text x="1405.0" y="299.0" text-anchor="middle" fill="#14213D" font-size="11">Offre déposée</text>
+<text x="60" y="516" fill="#5C6470" font-size="12">Gains attendus (hypothèses à mesurer) : temps de veille ÷ 3,</text>
+<text x="60" y="532" fill="#5C6470" font-size="12">décision argumentée (concurrence, sortant, critères), taux de réponse en hausse.</text>
+</svg>

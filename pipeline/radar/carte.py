@@ -46,9 +46,18 @@ def build(src: Path) -> dict:
                     d.append("M" + "L".join(f"{a:g},{b:g}" for a, b in seg) + "Z")
         cx = sum((project(*c)[0] - x0) * scale for c in _polys(f["geometry"])[0][0]) / len(_polys(f["geometry"])[0][0])
         cy = sum((project(*c)[1] - y0) * scale for c in _polys(f["geometry"])[0][0]) / len(_polys(f["geometry"])[0][0])
-        out[f["properties"]["code"]] = {"nom": f["properties"]["nom"], "d": "".join(d), "cx": round(cx, 1), "cy": round(cy, 1)}
-    return {"width": W, "height": height, "source": "gregoiredavid/france-geojson (Admin Express IGN, Licence Ouverte)",
-            "departements": out}
+        out[f["properties"]["code"]] = {
+            "nom": f["properties"]["nom"],
+            "d": "".join(d),
+            "cx": round(cx, 1),
+            "cy": round(cy, 1),
+        }
+    return {
+        "width": W,
+        "height": height,
+        "source": "gregoiredavid/france-geojson (Admin Express IGN, Licence Ouverte)",
+        "departements": out,
+    }
 
 
 def _polys(geom: dict) -> list:

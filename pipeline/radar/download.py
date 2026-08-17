@@ -1,6 +1,6 @@
 """Téléchargement des sources ouvertes (DECP, CPV, référentiel géographique, BOAMP).
 
-Usage : python -m radar.download [decp|cpv|geo|boamp|all]
+Usage : python -m radar.download [decp|cpv|geo|carte|boamp|all]
 
 Par défaut, la DECP est retéléchargée dans la version figée par data/sources.lock.json ;
 RADAR_DECP_LATEST=1 force la dernière version publiée.
@@ -165,9 +165,24 @@ def fetch_boamp(snapshot: dt.date | None = None) -> Path:
     return dest
 
 
+CARTE_URL = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson"
+
+
+def fetch_carte() -> Path:
+    """Contours simplifiés des départements (gregoiredavid/france-geojson, dérivé d'IGN Admin Express)."""
+    from . import carte
+
+    dest = config.RAW / "departements-version-simplifiee.geojson"
+    download(CARTE_URL, dest)
+    carte.main(["carte", str(dest)])
+    _lock("carte", {"url": CARTE_URL, "retrieved_at": _now(), "sha256": sha256(dest),
+                    "license": "Licence Ouverte (IGN Admin Express), via gregoiredavid/france-geojson"})
+    return dest
+
+
 def main(argv: list[str]) -> None:
     what = argv[1] if len(argv) > 1 else "all"
-    steps = {"decp": fetch_decp, "cpv": fetch_cpv, "geo": fetch_geo, "boamp": fetch_boamp}
+    steps = {"decp": fetch_decp, "cpv": fetch_cpv, "geo": fetch_geo, "carte": fetch_carte, "boamp": fetch_boamp}
     for name, fn in steps.items():
         if what in (name, "all"):
             print(f"[{name}] {fn()}")
