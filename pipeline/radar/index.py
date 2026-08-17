@@ -63,7 +63,7 @@ class AvisIndex:
 
     def __post_init__(self) -> None:
         texts = self.avis["texte"].tolist()
-        key = hashlib.sha1(("\n".join(self.avis["idweb"]) + self.model).encode()).hexdigest()[:12]
+        key = hashlib.sha1(("\n".join(self.avis["idweb"]) + "\n".join(texts) + self.model).encode()).hexdigest()[:12]
         cache = config.CACHE / f"emb_{self.model.split('/')[-1]}_{key}.npy"
         if cache.exists():
             self.emb = np.load(cache)

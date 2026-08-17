@@ -127,6 +127,16 @@ function ProfilForm({ onResult }: { onResult: (r: RadarRun) => void }) {
     onResult(await res.json());
     setEtat(null);
   };
+  const rafraichir = async () => {
+    setEtat("Téléchargement des avis ouverts…");
+    await fetch("/api/boamp/refresh", { method: "POST" });
+    const poll = window.setInterval(async () => {
+      const st = await (await fetch("/api/boamp/status")).json();
+      if (st.etat === "terminé") { window.clearInterval(poll); setEtat(`Instantané du ${st.snapshot_date} : ${st.avis} avis ouverts. Relancez le classement.`); }
+      else if (st.etat === "échec") { window.clearInterval(poll); setEtat(`Échec du rafraîchissement : ${st.erreur}`); }
+      else setEtat(st.etat === "indexation" ? "Indexation (embeddings) en cours, quelques minutes…" : "Téléchargement des avis ouverts…");
+    }, 3000);
+  };
   const list = (s: string) => s.split(/[\s,;]+/).filter(Boolean);
   return (
     <form onSubmit={submit} className="filters" style={{ marginTop: 18 }}>
@@ -143,6 +153,7 @@ function ProfilForm({ onResult }: { onResult: (r: RadarRun) => void }) {
       <div className="field"><label htmlFor="p-max">Montant max (€)</label>
         <input id="p-max" type="number" min={0} onChange={(e) => setForm({ ...form, montant_max: e.target.value ? Number(e.target.value) : null })} /></div>
       <button className="btn beacon" type="submit">Classer les avis</button>
+      <button className="btn ghost" type="button" onClick={rafraichir}>Rafraîchir le BOAMP</button>
       {etat && <span className="small muted" role="status">{etat}</span>}
     </form>
   );

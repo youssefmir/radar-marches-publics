@@ -12,10 +12,12 @@ Usage : python -m radar.boamp [chemin_instantané.json]
 from __future__ import annotations
 
 import datetime as dt
+import html
 import json
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
@@ -161,13 +163,26 @@ def parse_donnees(raw: str | None) -> dict:
     }
 
 
+def _txt(x: Any) -> str | None:
+    """Texte nettoyé : entités HTML décodées (« d&#039;Agglomération »), espaces compactés."""
+    if not isinstance(x, str):
+        return None
+    return " ".join(html.unescape(html.unescape(x)).split()) or None
+
+
+def _dep(code: Any) -> str:
+    """Code département sur 2 caractères au minimum (« 2 » -> « 02 »), « 2A »/« 971 » inchangés."""
+    c = str(code).strip().upper()
+    return c.zfill(2) if c.isdigit() and len(c) < 2 else c
+
+
 def flatten(snapshot_path: Path) -> pd.DataFrame:
     snap = json.loads(snapshot_path.read_text())
     snapshot_date = dt.date.fromisoformat(snap["snapshot_date"])
     rows = []
     for r in snap["records"]:
         d = parse_donnees(r.get("donnees"))
-        deps = r.get("code_departement") or []
+        deps = [_dep(x) for x in (r.get("code_departement") or [])]
         rows.append(
             {
                 "idweb": r["idweb"],
