@@ -60,7 +60,7 @@ Chaque décision suit le format **contexte → options → choix → pourquoi**.
 - **Contexte** : recherche sémantique en français, sur CPU.
 - **Options** : multilingual-e5-small ; paraphrase-multilingual-MiniLM-L12-v2 ; modèles plus grands.
 - **Choix** : e5-small.
-- **Pourquoi** : mesuré meilleur que MiniLM sur nos deux jeux de requêtes (nDCG@10 0,185 contre 0,165 en Q1 ; 0,358 contre 0,263 en Q2), et 4 minutes pour indexer 7 800 avis sur CPU. Seul, il reste derrière BM25 : d'où l'hybride.
+- **Pourquoi** : mesuré meilleur que MiniLM sur nos deux jeux de requêtes (nDCG@10 0,184 contre 0,165 en Q1 ; 0,358 contre 0,263 en Q2), et 4 minutes pour indexer 7 800 avis sur CPU. Seul, il reste derrière BM25 : d'où l'hybride.
 
 ## D10 — Évaluation sur la vérité terrain CPV, avec partition réglage / test
 

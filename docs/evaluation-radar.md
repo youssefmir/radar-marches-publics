@@ -15,11 +15,11 @@
 
 | Jeu | Méthode | Requêtes | Precision@10 | nDCG@10 | Recall@50 |
 |---|---|---:|---:|---:|---:|
-| Q1 profil CPV | BM25 | 223 | 0,302 [0,267 ; 0,339] | 0,322 [0,285 ; 0,360] | 0,328 [0,300 ; 0,358] |
-| Q1 profil CPV | Embeddings MiniLM | 223 | 0,153 [0,129 ; 0,179] | 0,165 [0,139 ; 0,193] | 0,175 [0,156 ; 0,194] |
-| Q1 profil CPV | Embeddings e5-small | 223 | 0,168 [0,142 ; 0,196] | 0,185 [0,156 ; 0,214] | 0,194 [0,172 ; 0,216] |
-| Q1 profil CPV | Hybride (alpha=0.5, réglé) | 223 | 0,313 [0,277 ; 0,348] | 0,338 [0,298 ; 0,375] | 0,345 [0,316 ; 0,374] |
-| Q1 profil CPV | Hybride RRF | 223 | 0,288 [0,253 ; 0,322] | 0,311 [0,274 ; 0,346] | 0,331 [0,302 ; 0,359] |
+| Q1 profil CPV | BM25 | 223 | 0,302 [0,266 ; 0,338] | 0,323 [0,285 ; 0,360] | 0,328 [0,300 ; 0,358] |
+| Q1 profil CPV | Embeddings MiniLM | 223 | 0,154 [0,130 ; 0,180] | 0,165 [0,140 ; 0,193] | 0,175 [0,155 ; 0,193] |
+| Q1 profil CPV | Embeddings e5-small | 223 | 0,167 [0,142 ; 0,195] | 0,184 [0,156 ; 0,213] | 0,193 [0,172 ; 0,215] |
+| Q1 profil CPV | Hybride (alpha=0.5, réglé) | 223 | 0,313 [0,278 ; 0,348] | 0,338 [0,298 ; 0,374] | 0,345 [0,316 ; 0,373] |
+| Q1 profil CPV | Hybride RRF | 223 | 0,287 [0,252 ; 0,321] | 0,310 [0,274 ; 0,346] | 0,330 [0,302 ; 0,358] |
 | Q2 avis exemple | BM25 | 295 | 0,382 [0,343 ; 0,421] | 0,404 [0,366 ; 0,444] | 0,133 [0,116 ; 0,151] |
 | Q2 avis exemple | Embeddings MiniLM | 295 | 0,248 [0,215 ; 0,281] | 0,263 [0,228 ; 0,296] | 0,072 [0,063 ; 0,082] |
 | Q2 avis exemple | Embeddings e5-small | 295 | 0,330 [0,294 ; 0,365] | 0,358 [0,321 ; 0,393] | 0,097 [0,087 ; 0,108] |
@@ -29,7 +29,7 @@
 Entre crochets : intervalle de confiance à 95 % par bootstrap sur les requêtes.
 
 **Lecture.**
-- Q1 profil CPV : l'hybride atteint un nDCG@10 de 0,338 contre 0,322 pour BM25 (+0,016) et 0,185 pour les embeddings seuls. Le gain sur BM25 est modeste : les intervalles de confiance se recouvrent.
+- Q1 profil CPV : l'hybride atteint un nDCG@10 de 0,338 contre 0,323 pour BM25 (+0,015) et 0,184 pour les embeddings seuls. Le gain sur BM25 est modeste : les intervalles de confiance se recouvrent.
 - Q2 avis exemple : l'hybride atteint un nDCG@10 de 0,427 contre 0,404 pour BM25 (+0,023) et 0,358 pour les embeddings seuls. Le gain sur BM25 est modeste : les intervalles de confiance se recouvrent.
 
 ### Choix de alpha (échantillon de réglage, nDCG@10 moyen Q1 + Q2)
@@ -42,7 +42,7 @@ Entre crochets : intervalle de confiance à 95 % par bootstrap sur les requêtes
 
 | Famille | Precision@10 | nDCG@10 |
 |---|---:|---:|
-| Fournitures | 0,351 | 0,384 |
+| Fournitures | 0,351 | 0,383 |
 | Services | 0,262 | 0,285 |
 | Travaux | 0,425 | 0,422 |
 
