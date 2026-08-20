@@ -65,6 +65,7 @@ lint: ## Vérifications statiques (ruff, TypeScript)
 
 screenshots: site ## Captures Playwright des pages (docs/img)
 	cd web && node scripts/screenshots.mjs ../docs/img
+	$(PY) scripts/optimise_images.py docs/img
 
 app: site ## Lance l'application locale sur http://127.0.0.1:8000/radar-marches-publics/
 	cd pipeline && ../.venv/bin/uvicorn radar.api:app --port 8000
