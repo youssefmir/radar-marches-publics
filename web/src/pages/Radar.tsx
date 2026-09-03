@@ -49,7 +49,7 @@ export default function Radar() {
           </div>
           <p>
             {idx.nb_avis.toLocaleString("fr-FR")} avis de marché ouverts au {dateFr(idx.snapshot_date)}, classés par un score
-            hybride expliqué : pertinence du texte et des codes CPV, territoire, taille, puis concurrence observée chez
+            hybride expliqué : pertinence du texte et des codes CPV, territoire, taille, puis concurrence observée chez
             l'acheteur dans l'historique des attributions (DECP).
           </p>
         </header>

@@ -130,7 +130,7 @@ main { padding: 0 0 64px; min-height: 70vh; }
 .figure { padding: 14px 16px 14px 0; border-right: 1px solid var(--rule); min-width: 0; }
 .figure:last-child { border-right: 0; }
 .figure + .figure { padding-left: 16px; }
-.figure .v { font-family: var(--serif); font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.1; overflow-wrap: anywhere; }
+.figure .v { font-family: var(--serif); font-size: clamp(1.5rem, 2.3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.1; white-space: nowrap; }
 .figure .l { font-size: 0.84rem; color: var(--ink-2); margin-top: 4px; }
 .figure .s { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
 .figure.alert .v { color: var(--single); }

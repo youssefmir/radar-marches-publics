@@ -45,6 +45,7 @@ export default function Acheteur() {
             <div className={`figure${alert ? " alert" : ""}`} key={l}>
               <div className="v"><CountUp value={v} format={fmt} /></div>
               <div className="l">{l}</div>
+              {v == null && <div className="s">non renseigné dans les DECP</div>}
             </div>
           ))}
         </div>

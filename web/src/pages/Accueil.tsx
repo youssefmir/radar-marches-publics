@@ -62,8 +62,8 @@ export default function Accueil() {
               Depuis 2024, {s ? <span style={{ color: "var(--single)" }}>{pct(s.unique, 0)}</span> : "…"} des marchés publics n'ont reçu qu'une seule offre.
             </motion.h1>
             <motion.p className="lead" initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: EASE, delay: 0.15 }}>
-              Des appels d'offres sans concurrence d'un côté ; de l'autre, des PME qui renoncent faute de temps pour la veille.
-              Radar Marchés Publics relie les deux : il trouve, qualifie et priorise les avis ouverts à partir de
+              Des appels d'offres sans concurrence d'un côté ; de l'autre, des PME qui renoncent faute de temps pour la veille.
+              Radar Marchés Publics relie les deux : il trouve, qualifie et priorise les avis ouverts à partir de
               l'historique réel des attributions.
             </motion.p>
             <div className="figures" style={{ marginTop: 22 }}>
@@ -93,7 +93,7 @@ export default function Accueil() {
               <FranceMap carte={base.carte} values={s.values} regionOf={regionOf} format={(x) => pct(x)}
                 label="Carte : taux de marchés à offre unique par département de l'acheteur, 2024 à 2026" />
             )}
-            <p className="source">Taux d'offre unique par département de l'acheteur, 2024 → 2026. Plus foncé = moins de concurrence. Source : DECP (decp.info), version du {base ? dateFr(base.meta.decp.version) : "…"}.</p>
+            <p className="source">Taux d'offre unique par département de l'acheteur, 2024 → 2026. Échelle sous la carte : de la valeur la plus faible à la plus forte. Source : DECP (decp.info), version du {base ? dateFr(base.meta.decp.version) : "…"}.</p>
           </div>
         </div>
       </section>
@@ -115,9 +115,9 @@ export default function Accueil() {
             <p>
               Un dirigeant de PME consacre plusieurs heures par semaine à éplucher le BOAMP et les plateformes d'achat,
               sans savoir si l'acheteur reçoit d'habitude deux offres ou quinze, ni si un titulaire sortant est installé.
-              Résultat : des réponses dispersées, des occasions manquées, et une concurrence faible sur une partie des marchés.
+              Résultat : des réponses dispersées, des occasions manquées, et une concurrence faible sur une partie des marchés.
             </p>
-            <p className="small muted">Hypothèse de cadrage, à valider en entretiens : voir la note de cadrage et le business case.</p>
+            <p className="small muted">Hypothèse de cadrage, à valider en entretiens : voir la note de cadrage et le business case.</p>
           </Reveal>
         </div>
       </section>

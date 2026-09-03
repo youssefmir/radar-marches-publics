@@ -118,7 +118,7 @@ export default function Panorama() {
           </div>
           <p>
             Marchés attribués depuis 2021, nettoyés et dédoublonnés dans l'entrepôt. Chaque chiffre vient de la couche
-            sémantique : survolez un libellé dans la page <a href="#/methode">Méthode</a> pour sa définition.
+            sémantique : consultez la page <a href="#/methode">Méthode</a> pour la définition de chaque indicateur.
           </p>
         </header>
         <div className="filters sticky" role="group" aria-label="Filtres du panorama">
@@ -201,7 +201,7 @@ export default function Panorama() {
           <section className="rubrique">
             <header>
               <div><div className="kicker">Évolution</div><h2>Six années d'attributions</h2></div>
-              <p>Les filtres s'appliquent, sauf l'année. À partir de 2024, la publication centralisée (PES Marché) rend le nombre d'offres renseigné pour plus de 80 % des marchés, contre moins de 26 % avant : les comparaisons de concurrence avant/après 2024 sont fragiles.</p>
+              <p>Les filtres s'appliquent, sauf l'année. À partir de 2024, la publication centralisée (PES Marché) rend le nombre d'offres renseigné pour plus de 80 % des marchés, contre moins de 26 % avant : les comparaisons de concurrence avant/après 2024 sont fragiles.</p>
             </header>
             <div className="cols cols-3 col-rule">
               <Reveal className="panel">
