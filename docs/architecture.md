@@ -70,7 +70,7 @@ flowchart LR
   dim_date --> mart_marches
 ```
 
-La documentation dbt complète (descriptions, tests, lignage interactif) se génère avec `make dbt-docs` puis `cd dbt && ../.venv/bin/dbt docs serve --profiles-dir .`.
+La documentation dbt complète (descriptions, tests, lignage interactif) est [publiée avec la démo](https://youssefmir.github.io/radar-marches-publics/dbt-docs/) ; elle se régénère avec `make dbt-docs`.
 
 ## Organisation du dépôt
 

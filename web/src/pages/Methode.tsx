@@ -137,6 +137,7 @@ export default function Methode() {
         <header><div><div className="kicker">Démarche Business Analyst</div><h2>Les livrables</h2></div></header>
         <ul className="list-plain cols cols-2" style={{ gap: "0 28px" }}>
           {DOCS.map(([l, p]) => <li key={p}><a href={`${REPO}/blob/main/${p}`}>{l}</a></li>)}
+          <li><a href={`${import.meta.env.BASE_URL}dbt-docs/`}>Documentation dbt : modèles, tests et lignage interactif</a></li>
         </ul>
       </section>
 

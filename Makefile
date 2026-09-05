@@ -51,8 +51,9 @@ evaluate: ## Évaluation du radar (docs/evaluation-radar.md), environ 10 minutes
 pipeline: dbt quality history ## Entrepôt + qualité + historique + exports du site
 	$(RUN) radar.export_site
 
-site: ## Construit le site statique (web/dist)
+site: ## Construit le site statique (web/dist), avec la documentation dbt si elle a été générée
 	cd web && npm run build
+	@if [ -f dbt/target/index.html ]; then mkdir -p web/dist/dbt-docs && cp dbt/target/index.html dbt/target/manifest.json dbt/target/catalog.json web/dist/dbt-docs/; fi
 
 test: lint ## Lint + tests Python (pytest) et tests du front (Vitest) ; les tests dbt passent avec `make dbt`
 	$(PY) -m pytest -q
