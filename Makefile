@@ -7,14 +7,14 @@ RUN     := cd pipeline && ../$(PY) -m
 SNAPSHOT ?=
 
 .DEFAULT_GOAL := help
-.PHONY: help install data data-reference boamp sirene dbt dbt-docs quality history pipeline evaluate site test lint screenshots app all clean
+.PHONY: help install prepare data data-reference boamp sirene dbt dbt-docs quality history pipeline evaluate site test lint screenshots app all clean
 
 help: ## Affiche cette aide
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  \033[1m%-16s\033[0m %s\n", $$1, $$2}'
 
 install: ## Installe l'environnement Python (uv) et les dépendances du site (npm)
 	uv venv -q --allow-existing -p 3.12 .venv
-	uv pip install -q -p .venv -e ".[dev]"
+	uv pip install -q -p .venv --torch-backend cpu -e ".[dev]"
 	cd web && npm ci
 
 data: ## Télécharge les sources (DECP figée par sources.lock.json, CPV, géographie, carte) et aplatit le BOAMP versionné
@@ -22,7 +22,7 @@ data: ## Télécharge les sources (DECP figée par sources.lock.json, CPV, géog
 	$(RUN) radar.download cpv
 	$(RUN) radar.download geo
 	$(RUN) radar.download carte
-	@if [ ! -f data/interim/boamp_avis.parquet ]; then cp $$(ls data/snapshots/boamp_avis_*.parquet | tail -1) data/interim/boamp_avis.parquet; fi
+	@$(MAKE) -s prepare
 	@if [ ! -f data/interim/sirene.parquet ]; then cd pipeline && ../$(PY) -c "import pandas as pd; from radar import config; pd.read_parquet(config.DATA / 'history' / 'sirene_titulaires.parquet').to_parquet(config.INTERIM / 'sirene.parquet', index=False)"; fi
 
 boamp: ## Prend un nouvel instantané des avis BOAMP ouverts (remplace l'instantané de la démo)
@@ -67,7 +67,11 @@ screenshots: site ## Captures Playwright des pages (docs/img)
 	cd web && node scripts/screenshots.mjs ../docs/img
 	$(PY) scripts/optimise_images.py docs/img
 
-app: site ## Lance l'application locale sur http://127.0.0.1:8000/radar-marches-publics/
+prepare: ## Prépare l'instantané BOAMP versionné pour l'application (sans téléchargement)
+	@mkdir -p data/interim
+	@if [ ! -f data/interim/boamp_avis.parquet ]; then cp $$(ls data/snapshots/boamp_avis_*.parquet | tail -1) data/interim/boamp_avis.parquet; fi
+
+app: prepare site ## Lance l'application locale sur http://127.0.0.1:8000/radar-marches-publics/
 	cd pipeline && ../.venv/bin/uvicorn radar.api:app --port 8000
 
 all: install data pipeline evaluate site test screenshots ## Chaîne complète, des sources aux captures
