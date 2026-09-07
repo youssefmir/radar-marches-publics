@@ -165,7 +165,9 @@ def fetch_boamp(snapshot: dt.date | None = None) -> Path:
     return dest
 
 
-CARTE_URL = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson"
+CARTE_URL = (
+    "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson"
+)
 
 
 def fetch_carte() -> Path:
@@ -175,8 +177,15 @@ def fetch_carte() -> Path:
     dest = config.RAW / "departements-version-simplifiee.geojson"
     download(CARTE_URL, dest)
     carte.main(["carte", str(dest)])
-    _lock("carte", {"url": CARTE_URL, "retrieved_at": _now(), "sha256": sha256(dest),
-                    "license": "Licence Ouverte (IGN Admin Express), via gregoiredavid/france-geojson"})
+    _lock(
+        "carte",
+        {
+            "url": CARTE_URL,
+            "retrieved_at": _now(),
+            "sha256": sha256(dest),
+            "license": "Licence Ouverte (IGN Admin Express), via gregoiredavid/france-geojson",
+        },
+    )
     return dest
 
 

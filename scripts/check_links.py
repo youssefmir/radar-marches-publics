@@ -30,7 +30,11 @@ def anchors(md: Path) -> set[str]:
 
 def main() -> int:
     errors = []
-    files = [p for p in ROOT.rglob("*.md") if not any(x in p.parts for x in ("node_modules", ".venv", "dbt_packages", "target"))]
+    files = [
+        p
+        for p in ROOT.rglob("*.md")
+        if not any(x in p.parts for x in ("node_modules", ".venv", "dbt_packages", "target"))
+    ]
     for md in files:
         text = re.sub(r"```.*?```", "", md.read_text(encoding="utf-8"), flags=re.S)
         for target in LINK.findall(text):
