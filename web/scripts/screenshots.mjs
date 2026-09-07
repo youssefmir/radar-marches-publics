@@ -75,6 +75,25 @@ for (const [name, route, theme, device, full, action] of SHOTS) {
   console.log("capture", file);
   await ctx.close();
 }
+// Parcours de navigation interne (sans rechargement) : chaque lien du menu, puis une fiche acheteur.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  page.on("pageerror", (e) => errors.push(`navigation: ${e.message}`));
+  await page.goto(BASE + "#/", { waitUntil: "networkidle" });
+  for (const lien of ["Radar AO", "Panorama", "Acheteurs", "Méthode", "Étude de cas"]) {
+    await page.locator("nav").getByRole("link", { name: lien }).click();
+    await page.waitForTimeout(1200);
+    const h1 = await page.locator("h1").first().textContent({ timeout: 15000 }).catch(() => null);
+    if (!h1) errors.push(`navigation: aucun titre après le lien « ${lien} »`);
+    else console.log(`navigation « ${lien} » : ${h1.slice(0, 60)}`);
+  }
+  await page.locator("nav").getByRole("link", { name: "Acheteurs" }).click();
+  await page.locator("table a").first().click();
+  await page.waitForTimeout(1200);
+  console.log("navigation fiche :", (await page.locator("h1").first().textContent()).slice(0, 60));
+  await ctx.close();
+}
 await browser.close();
 stop();
 if (errors.length) {
