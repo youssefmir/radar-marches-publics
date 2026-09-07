@@ -10,7 +10,9 @@ export default function Layout() {
   const [theme, toggle] = useTheme();
   const { data } = useBase();
   const loc = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [loc.pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [loc.pathname]);
   return (
     <>
       <a href="#contenu" className="skip">Aller au contenu</a>
