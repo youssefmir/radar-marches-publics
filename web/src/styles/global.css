@@ -28,7 +28,7 @@
   --viz-1: #007a9e;
   --viz-2: #d9650f;
   --viz-3: #7a5195;
-  --contours: url("/radar-marches-publics/contours.svg");
+  --contours: url("/contours.svg");
   --serif: "Bitter", Georgia, serif;
   --sans: "Public Sans", "Helvetica Neue", Arial, sans-serif;
   --mono: "Spline Sans Mono", ui-monospace, monospace;
@@ -41,7 +41,7 @@
     --ok: #4cc38a; --warn: #f0b429;
     --seq-0: #1a2633; --seq-1: #1d3c47; --seq-2: #22596a; --seq-3: #2f7f93; --seq-4: #4ea5b9; --seq-5: #8fd0de;
     --viz-1: #2b93b3; --viz-2: #d0620e; --viz-3: #a781c9;
-    --contours: url("/radar-marches-publics/contours-dark.svg");
+    --contours: url("/contours-dark.svg");
   }
 }
 :root[data-theme="dark"] {
@@ -51,7 +51,7 @@
   --ok: #4cc38a; --warn: #f0b429;
   --seq-0: #1a2633; --seq-1: #1d3c47; --seq-2: #22596a; --seq-3: #2f7f93; --seq-4: #4ea5b9; --seq-5: #8fd0de;
   --viz-1: #2b93b3; --viz-2: #d0620e; --viz-3: #a781c9;
-  --contours: url("/radar-marches-publics/contours-dark.svg");
+  --contours: url("/contours-dark.svg");
 }
 
 * { box-sizing: border-box; }
