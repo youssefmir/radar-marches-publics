@@ -1,0 +1,171 @@
+{
+ "source": {
+  "dataset": "https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire",
+  "url": "https://static.data.gouv.fr/resources/donnees-essentielles-de-la-commande-publique-consolidees-format-tabulaire/20261031-051826/decp.parquet",
+  "resource_last_modified": "2026-10-31T05:19:44.406000+00:00",
+  "retrieved_at": "2026-11-01T19:31:05+00:00",
+  "bytes": 255254660,
+  "sha256": "24b6b5773d19e3882d504f0d75dc44b3722384769cf4c51e34788d58feb055bc",
+  "license": "Licence Ouverte / Open Licence 2.0 (Etalab)"
+ },
+ "lignes_source": 3361764,
+ "lignes_attribution_initiale": 2141902,
+ "date_max_notification": "2026-10-31",
+ "entonnoir": [
+  {
+   "etape": "Attributions initiales publiées (toutes dates)",
+   "lignes": 2141902
+  },
+  {
+   "etape": "R1 – hors période 2021→aujourd'hui ou date absente",
+   "lignes": -379903
+  },
+  {
+   "etape": "R1b – acheteur non identifié",
+   "lignes": -6
+  },
+  {
+   "etape": "Périmètre analysé",
+   "lignes": 1761993,
+   "total": true
+  },
+  {
+   "etape": "R2 – doublons exacts (même marché, même titulaire)",
+   "lignes": -3123
+  },
+  {
+   "etape": "R2b – quasi-doublons (même acheteur, objet, montant, date, titulaire)",
+   "lignes": -267329
+  },
+  {
+   "etape": "Attributions retenues (fct_attributions)",
+   "lignes": 1491541,
+   "total": true
+  }
+ ],
+ "marches": {
+  "identifiants_source": 1329760,
+  "marches_apres_r2c": 1264104,
+  "fusionnes_r2c": 65656
+ },
+ "montant_statut": [
+  {
+   "statut": "ok",
+   "n": 1424637,
+   "montant": 1925229577117.5034,
+   "part": 0.9551443775263302
+  },
+  {
+   "statut": "absent",
+   "n": 35423,
+   "montant": NaN,
+   "part": 0.023749263345761197
+  },
+  {
+   "statut": "nul_ou_negatif",
+   "n": 25603,
+   "montant": -5735312.421700016,
+   "part": 0.017165468465164552
+  },
+  {
+   "statut": "aberrant",
+   "n": 5690,
+   "montant": 1507288581742.5698,
+   "part": 0.0038148465245004997
+  },
+  {
+   "statut": "valeur_remplissage",
+   "n": 188,
+   "montant": NaN,
+   "part": 0.00012604413824360175
+  }
+ ],
+ "offres_statut": [
+  {
+   "statut": "ok",
+   "n": 787076,
+   "part": 0.5276931710224526
+  },
+  {
+   "statut": "absent",
+   "n": 696236,
+   "part": 0.4667897161392144
+  },
+  {
+   "statut": "hors_seuil",
+   "n": 5113,
+   "part": 0.003427998291699658
+  },
+  {
+   "statut": "zero",
+   "n": 3116,
+   "part": 0.002089114546633314
+  }
+ ],
+ "montant_suspect": {
+  "n": 24628,
+  "montant": 418720118560.42377,
+  "part_montant": 0.36647119616007506
+ },
+ "siret": {
+  "acheteur_valide": 0.9986001055284434,
+  "titulaire_type_siret": 0.9499276251876415,
+  "titulaire_siret_valide": 0.9391924191155322,
+  "titulaire_siret_invalides": 16012
+ },
+ "completude": {
+  "code_cpv": 0.9996225380328131,
+  "code_cpv_dans_nomenclature": 0.992783260383453,
+  "procedure": 0.9280536036220258,
+  "montant_exploitable": 0.9551443775263302,
+  "offres_exploitables": 0.5276931710224526,
+  "categorie_titulaire": 0.9205137505439006,
+  "objet": 0.9958834520807675,
+  "duree_mois": 0.99446947821079,
+  "departement_acheteur": 0.9915342588638194
+ },
+ "par_annee_source": [
+  {
+   "annee": 2021,
+   "lignes": 222527,
+   "part_pes_2024": 0.015004920751189744,
+   "offres_exploitables": 0.1786929226565765
+  },
+  {
+   "annee": 2022,
+   "lignes": 243703,
+   "part_pes_2024": 0.04699162505180486,
+   "offres_exploitables": 0.19049416708042166
+  },
+  {
+   "annee": 2023,
+   "lignes": 251496,
+   "part_pes_2024": 0.0769873079492318,
+   "offres_exploitables": 0.2507157171485829
+  },
+  {
+   "annee": 2024,
+   "lignes": 319564,
+   "part_pes_2024": 0.3544391733737217,
+   "offres_exploitables": 0.8201017636529772
+  },
+  {
+   "annee": 2025,
+   "lignes": 287771,
+   "part_pes_2024": 0.4228501134582706,
+   "offres_exploitables": 0.8438411097713112
+  },
+  {
+   "annee": 2026,
+   "lignes": 166480,
+   "part_pes_2024": 0.42231499279192697,
+   "offres_exploitables": 0.7984502642960115
+  }
+ ],
+ "sirene": {
+  "titulaires_enrichis": 13451,
+  "titulaires": 187918,
+  "part_montant_couverte": 0.734773583309963,
+  "entrepreneurs_individuels_detectes": 18
+ }
+}
