@@ -2,7 +2,7 @@
 
 > Un radar d'appels d'offres pour les PME : il trouve, qualifie et priorise les avis de marchés publics ouverts à partir de l'historique réel des attributions, afin de répondre moins souvent au hasard et plus souvent là où l'on peut gagner.
 
-**[Voir la démo](https://youssefmir.github.io/radar-marches-publics/)** · [Démarche BA](docs/README.md) · [Résultats clés](#resultats)
+**[Voir la démo](https://radar-marches-publics.vercel.app/)** · [Démarche BA](docs/README.md) · [Résultats clés](#resultats)
 
 ![Page d'ouverture de Radar Marchés Publics : titre « Depuis 2024, 26 % des marchés publics n'ont reçu qu'une seule offre », chiffres clés et carte des départements](docs/img/hero.png)
 
@@ -31,7 +31,7 @@
 
 ## Essayer en 1 minute
 
-**1. En ligne, sans rien installer** : ouvrez la [démo](https://youssefmir.github.io/radar-marches-publics/). Elle contient le panorama, 1 000 fiches acheteur et le radar précalculé pour trois entreprises fictives.
+**1. En ligne, sans rien installer** : ouvrez la [démo](https://radar-marches-publics.vercel.app/). Elle contient le panorama, 1 000 fiches acheteur et le radar précalculé pour trois entreprises fictives.
 
 **2. En local, avec votre propre profil d'entreprise.** Prérequis : Python 3.12 ou plus, [uv](https://docs.astral.sh/uv/), Node.js 20 ou plus, GNU Make, environ 2 Go d'espace disque.
 
@@ -129,7 +129,7 @@ flowchart LR
 - **Radar** : un score hybride combine sens (embeddings multilingues), mots-clés (BM25), codes CPV, territoire, taille, concurrence historique et titulaire sortant.
 - **Site** : React et ECharts, sans aucun CDN ; le panorama agrège un cube Parquet directement dans le navigateur.
 
-Architecture détaillée : [docs/architecture.md](docs/architecture.md). Documentation dbt en ligne (modèles, tests, lignage) : [dbt-docs](https://youssefmir.github.io/radar-marches-publics/dbt-docs/).
+Architecture détaillée : [docs/architecture.md](docs/architecture.md). Documentation dbt en ligne (modèles, tests, lignage) : [dbt-docs](https://radar-marches-publics.vercel.app/dbt-docs/).
 
 ## La démarche Business Analyst
 
@@ -160,6 +160,8 @@ Architecture détaillée : [docs/architecture.md](docs/architecture.md). Documen
 | `make all` | Toute la chaîne, des sources aux captures |
 
 `make help` liste toutes les commandes.
+
+La démo statique est publiée sur [Vercel](https://radar-marches-publics.vercel.app/), avec une publication automatique à chaque push sur `main`. La configuration `vercel.json` installe les dépendances dans `web/`, construit le site avec `BASE_PATH=/ npm --prefix web run build`, puis publie `web/dist/`. Les exports de données et la documentation dbt sont inclus dans la démo ; l’API Python et les fonctionnalités de calcul en direct restent disponibles en local via `make app`.
 
 ## Qualité, données et limites
 
